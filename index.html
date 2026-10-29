@@ -569,7 +569,7 @@ body {
     <div id="word-collected" style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;justify-content:center;"></div>
   </div>
   <!-- Carretera de 3 carriles -->
-  <div id="word-road-wrap" style="flex:1;min-height:0;position:relative;margin:6px 12px 10px;border-radius:12px;overflow:hidden;background:#3a3a4a;box-shadow:0 2px 12px rgba(0,0,0,.35);">
+  <div id="word-road-wrap" style="flex:1;min-height:0;position:relative;margin:6px 12px 10px;border-radius:12px;overflow:hidden;background:#3a3a4a;box-shadow:0 2px 12px rgba(0,0,0,.35);touch-action:none;user-select:none;">
     <!-- líneas de carril -->
     <div id="word-lane-lines" style="position:absolute;inset:0;pointer-events:none;z-index:1;"></div>
     <!-- opciones de letra (3 carriles) -->
@@ -1606,10 +1606,13 @@ function wordDragStart(e) {
   wordStartPx = p.x - rect.left;
   wordStartCarLeft = wordCarLeft;
   document.getElementById('word-car').style.transition = 'none';
+  // Listeners en document Y en el wrap para máxima compatibilidad con iOS Safari
   document.addEventListener('mousemove', wordDragMove);
   document.addEventListener('touchmove', wordDragMove, {passive:false});
   document.addEventListener('mouseup',   wordDragEnd);
   document.addEventListener('touchend',  wordDragEnd);
+  wrap.addEventListener('touchmove', wordDragMove, {passive:false});
+  wrap.addEventListener('touchend',  wordDragEnd);
 }
 
 // Carril actual del coche (0=arriba, 1=medio, 2=abajo)
@@ -1665,6 +1668,11 @@ function wordDragEnd(e) {
   document.removeEventListener('touchmove', wordDragMove);
   document.removeEventListener('mouseup',   wordDragEnd);
   document.removeEventListener('touchend',  wordDragEnd);
+  var wrap = document.getElementById('word-road-wrap');
+  if (wrap) {
+    wrap.removeEventListener('touchmove', wordDragMove);
+    wrap.removeEventListener('touchend',  wordDragEnd);
+  }
 }
 
 function wordCheckHit(cd) {
