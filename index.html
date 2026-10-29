@@ -1545,9 +1545,10 @@ function buildWordRoad() {
   // Colocar las 3 opciones de letra (una por carril) a la derecha
   wordPlaceLetterOptions();
 
-  // Evento drag
-  carEl.onmousedown  = wordDragStart;
-  carEl.ontouchstart = wordDragStart;
+  // Evento drag — addEventListener para máxima compatibilidad (pizarras, iPad, PC)
+  carEl.addEventListener('mousedown',   wordDragStart);
+  carEl.addEventListener('touchstart',  wordDragStart, {passive:false});
+  carEl.addEventListener('pointerdown', wordDragStart);
 
   // Activar el juego: leer la palabra y habilitar el arrastre
   setTimeout(function(){
@@ -1598,6 +1599,9 @@ function wordPlaceLetterOptions() {
 
 function wordDragStart(e) {
   if (!wordActive) return;
+  // Evitar doble disparo (pointer + mouse/touch en el mismo gesto)
+  if (e.type === 'mousedown' && wordDragging) return;
+  if (e.type === 'touchstart' && e.pointerType) return; // pointer ya lo maneja
   e.preventDefault();
   wordDragging = true;
   var p = e.touches ? {x:e.touches[0].clientX, y:e.touches[0].clientY} : {x:e.clientX, y:e.clientY};
@@ -1606,11 +1610,12 @@ function wordDragStart(e) {
   wordStartPx = p.x - rect.left;
   wordStartCarLeft = wordCarLeft;
   document.getElementById('word-car').style.transition = 'none';
-  // Listeners en document Y en el wrap para máxima compatibilidad con iOS Safari
-  document.addEventListener('mousemove', wordDragMove);
-  document.addEventListener('touchmove', wordDragMove, {passive:false});
-  document.addEventListener('mouseup',   wordDragEnd);
-  document.addEventListener('touchend',  wordDragEnd);
+  document.addEventListener('mousemove',   wordDragMove);
+  document.addEventListener('touchmove',   wordDragMove, {passive:false});
+  document.addEventListener('pointermove', wordDragMove);
+  document.addEventListener('mouseup',     wordDragEnd);
+  document.addEventListener('touchend',    wordDragEnd);
+  document.addEventListener('pointerup',   wordDragEnd);
   wrap.addEventListener('touchmove', wordDragMove, {passive:false});
   wrap.addEventListener('touchend',  wordDragEnd);
 }
@@ -1623,7 +1628,7 @@ var wordRafId = null;
 
 function wordDragMove(e) {
   if (!wordDragging || !wordActive) return;
-  e.preventDefault();
+  if (e.cancelable) e.preventDefault();
   var p = e.touches ? {x:e.touches[0].clientX, y:e.touches[0].clientY} : {x:e.clientX, y:e.clientY};
   var wrap = document.getElementById('word-road-wrap');
   var rect = wrap.getBoundingClientRect();
@@ -1663,11 +1668,14 @@ function wordDragMove(e) {
 }
 
 function wordDragEnd(e) {
+  if (!wordDragging) return;
   wordDragging = false;
-  document.removeEventListener('mousemove', wordDragMove);
-  document.removeEventListener('touchmove', wordDragMove);
-  document.removeEventListener('mouseup',   wordDragEnd);
-  document.removeEventListener('touchend',  wordDragEnd);
+  document.removeEventListener('mousemove',   wordDragMove);
+  document.removeEventListener('touchmove',   wordDragMove);
+  document.removeEventListener('pointermove', wordDragMove);
+  document.removeEventListener('mouseup',     wordDragEnd);
+  document.removeEventListener('touchend',    wordDragEnd);
+  document.removeEventListener('pointerup',   wordDragEnd);
   var wrap = document.getElementById('word-road-wrap');
   if (wrap) {
     wrap.removeEventListener('touchmove', wordDragMove);
