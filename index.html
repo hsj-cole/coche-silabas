@@ -344,45 +344,63 @@ body {
 }
 
 .menu-buttons {
-  display: flex; flex-direction: column;
-  gap: 16px; width: 100%; max-width: 420px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  width: 100%;
+  max-width: 580px;
 }
 .menu-btn {
-  display: flex; align-items: center; gap: 16px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 6px;
   background: rgba(255,255,255,0.12);
   border: 2px solid rgba(255,255,255,0.25);
-  border-radius: 20px;
-  padding: 18px 22px;
+  border-radius: 18px;
+  padding: 12px 6px 11px;
   cursor: pointer;
-  text-align: left;
+  text-align: center;
   transition: background .15s, transform .12s, box-shadow .12s;
   box-shadow: 0 4px 16px rgba(0,0,0,0.2);
   width: 100%;
 }
-.menu-btn:hover  { background: rgba(255,255,255,0.22); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.25); }
+.menu-btn:hover  { background: rgba(255,255,255,0.22); transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.28); }
 .menu-btn:active { transform: translateY(1px); }
 .menu-btn.disabled { opacity: .45; cursor: default; pointer-events: none; }
 .menu-btn-icon {
-  font-size: 2.4rem; flex-shrink: 0;
-  width: 54px; height: 54px;
+  font-size: 2rem;
+  width: 48px; height: 48px;
   background: rgba(255,255,255,0.15);
   border-radius: 14px;
   display: flex; align-items: center; justify-content: center;
 }
-.menu-btn-text { flex: 1; }
 .menu-btn-title {
   font-family: 'Fredoka One', cursive;
-  font-size: clamp(1.1rem, 3.5vw, 1.4rem);
+  font-size: clamp(.75rem, 2.4vw, .9rem);
   color: var(--accent);
-  line-height: 1.1;
+  line-height: 1.2;
 }
+.menu-btn-text { display: contents; }
 .menu-btn-desc {
-  font-size: clamp(.75rem, 2vw, .9rem);
-  color: rgba(255,255,255,0.75);
-  margin-top: 3px;
+  font-size: .72rem;
+  color: rgba(255,255,255,0.7);
+  line-height: 1.3;
+  margin-top: 2px;
 }
-.menu-btn-arrow {
-  font-size: 1.4rem; opacity: .6; flex-shrink: 0;
+.menu-btn-arrow { display: none; }
+.lu-point-pop {
+  position: fixed;
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.6rem;
+  color: #ffd600;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.4);
+  pointer-events: none;
+  z-index: 9999;
+  animation: luPointAnim 1s ease-out forwards;
+}
+@keyframes luPointAnim {
+  0%   { opacity: 1; transform: translateY(0) scale(1); }
+  80%  { opacity: 1; transform: translateY(-60px) scale(1.2); }
+  100% { opacity: 0; transform: translateY(-80px) scale(0.8); }
 }
 .coming-soon {
   font-size: .7rem; font-weight: 700;
@@ -437,6 +455,7 @@ body {
 
 <!-- MAIN MENU -->
 <div id="main-menu" class="screen active">
+  <button id="fullscreen-btn" onclick="toggleFullscreen()" title="Pantalla completa" style="position:absolute;top:14px;right:14px;background:rgba(255,255,255,0.15);border:2px solid rgba(255,255,255,0.3);border-radius:12px;padding:8px 12px;font-size:1.3rem;cursor:pointer;transition:background .15s;z-index:10;">⛶</button>
   <div class="menu-header">
     <h1>🚗 El Coche de las Sílabas</h1>
     <p>Elige un modo de juego</p>
@@ -445,27 +464,43 @@ body {
   <div class="menu-buttons">
     <button class="menu-btn" onclick="showScreen('welcome')">
       <div class="menu-btn-icon">🔤</div>
-      <div class="menu-btn-text">
-        <div class="menu-btn-title">Vocales Directas</div>
-        <div class="menu-btn-desc">Arrastra el coche hasta la vocal para formar sílabas</div>
-      </div>
-      <div class="menu-btn-arrow">›</div>
+      <div class="menu-btn-title">Vocales Directas</div>
+      <div class="menu-btn-desc">Lleva el coche a la vocal correcta</div>
     </button>
     <button class="menu-btn" onclick="showScreen('drive-welcome')">
       <div class="menu-btn-icon">🏎️</div>
-      <div class="menu-btn-text">
-        <div class="menu-btn-title">Conduce tu Coche</div>
-        <div class="menu-btn-desc">Escucha la sílaba y lleva el coche hasta la vocal correcta</div>
-      </div>
-      <div class="menu-btn-arrow">›</div>
+      <div class="menu-btn-title">Conduce tu Coche</div>
+      <div class="menu-btn-desc">Escucha la sílaba y conduce al carril correcto</div>
     </button>
     <button class="menu-btn" onclick="showScreen('word-welcome')">
       <div class="menu-btn-icon">📝</div>
-      <div class="menu-btn-text">
-        <div class="menu-btn-title">Forma tu Palabra</div>
-        <div class="menu-btn-desc">Escucha la palabra y recoge las letras en orden</div>
-      </div>
-      <div class="menu-btn-arrow">›</div>
+      <div class="menu-btn-title">Forma tu Palabra</div>
+      <div class="menu-btn-desc">Une sílabas para formar la palabra del emoji</div>
+    </button>
+    <button class="menu-btn" onclick="showScreen('sylword-welcome')">
+      <div class="menu-btn-icon">🧩</div>
+      <div class="menu-btn-title">Forma por Sílabas</div>
+      <div class="menu-btn-desc">Ordena las sílabas y completa la palabra</div>
+    </button>
+    <button class="menu-btn" onclick="showScreen('memory-welcome'); memInitWelcome();">
+      <div class="menu-btn-icon">🃏</div>
+      <div class="menu-btn-title">Memoria de Sílabas</div>
+      <div class="menu-btn-desc">Encuentra las parejas de sílabas y emojis</div>
+    </button>
+    <button class="menu-btn" onclick="showScreen('leeune-welcome'); luInitWelcome();">
+      <div class="menu-btn-icon">📖</div>
+      <div class="menu-btn-title">Lee tu Coche</div>
+      <div class="menu-btn-desc">Lee la palabra del coche y llévalo a su emoji</div>
+    </button>
+    <button class="menu-btn" onclick="showScreen('dictado-welcome'); dlInitWelcome();">
+      <div class="menu-btn-icon">🎤</div>
+      <div class="menu-btn-title">Dictado Loco</div>
+      <div class="menu-btn-desc">Escucha la sílaba y escríbela o encuéntrala</div>
+    </button>
+    <button class="menu-btn" onclick="showScreen('cs-game'); csStart();">
+      <div class="menu-btn-icon">🔢</div>
+      <div class="menu-btn-title">¿Cuántas Sílabas?</div>
+      <div class="menu-btn-desc">Cuenta las sílabas de la palabra</div>
     </button>
   </div>
 </div>
@@ -480,7 +515,11 @@ body {
   <div class="welcome-road" style="margin:8px auto;">
     <div class="preview-car">🚙</div>
   </div>
-  <div class="grid-title">¿Con qué consonante quieres jugar?</div>
+  <div style="display:flex;gap:8px;margin:4px 0 8px;flex-shrink:0;justify-content:center;">
+    <button id="vd-btn-basic"    onclick="vdSetLevel('basic')"    class="sylword-opt-btn sylword-opt-active">⭐ Básico</button>
+    <button id="vd-btn-advanced" onclick="vdSetLevel('advanced')" class="sylword-opt-btn">🌟 Avanzado</button>
+  </div>
+  <div class="grid-title" id="vd-grid-title">¿Con qué consonante quieres jugar?</div>
   <div style="display:flex;justify-content:center;width:100%;flex-shrink:0;">
     <div class="consonant-grid" id="consonant-grid" style="max-width:480px;width:100%;"></div>
   </div>
@@ -507,9 +546,16 @@ body {
   <div class="welcome-road" style="margin:8px auto;">
     <div class="preview-car">🚙</div>
   </div>
-  <div class="grid-title">¿Con qué consonante quieres jugar?</div>
+  <div style="display:flex;gap:8px;margin:4px 0 8px;flex-shrink:0;justify-content:center;">
+    <button id="drive-btn-basic"    onclick="driveSetLevel('basic')"    class="sylword-opt-btn sylword-opt-active">⭐ Básico</button>
+    <button id="drive-btn-advanced" onclick="driveSetLevel('advanced')" class="sylword-opt-btn">🌟 Avanzado</button>
+  </div>
+  <div class="grid-title" id="drive-grid-title">¿Con qué consonante quieres jugar?</div>
   <div style="display:flex;justify-content:center;width:100%;flex-shrink:0;">
     <div class="consonant-grid" id="drive-consonant-grid" style="max-width:480px;width:100%;"></div>
+  </div>
+  <div style="display:flex;justify-content:center;padding:16px 16px 20px;">
+    <button id="drive-start-btn" onclick="startDriveMulti()" disabled style="background:var(--accent);border:none;border-radius:14px;padding:12px 36px;font-family:'Fredoka One',cursive;font-size:1.2rem;color:var(--ink);cursor:pointer;box-shadow:0 4px 0 rgba(0,0,0,.2);">¡Jugar! ▶</button>
   </div>
 </div>
 
@@ -579,6 +625,214 @@ body {
   </div>
 </div>
 
+<!-- FORMA POR SÍLABAS — elegir opciones -->
+<div id="sylword-welcome" class="screen">
+  <div class="game-topbar">
+    <button class="back-btn" onclick="showScreen('main-menu')">← Volver</button>
+    <div class="game-title">🧩 Forma por Sílabas</div>
+    <div style="width:80px"></div>
+  </div>
+  <div class="grid-title" style="margin-top:10px;" id="sylword-grid-title">Elige las consonantes con las que jugar</div>
+  <div style="display:flex;gap:8px;margin:4px 0 6px;flex-shrink:0;justify-content:center;">
+    <button id="sylword-btn-basic"    onclick="sylwordSetLevel('basic')"    class="sylword-opt-btn sylword-opt-active">⭐ Básico</button>
+    <button id="sylword-btn-advanced" onclick="sylwordSetLevel('advanced')" class="sylword-opt-btn">🌟 Avanzado</button>
+  </div>
+  <div style="display:flex;justify-content:center;width:100%;flex-shrink:0;">
+    <div id="sylword-con-grid" class="consonant-grid" style="max-width:480px;width:100%;"></div>
+  </div>
+  <!-- Opciones: nº sílabas y dificultad -->
+  <div style="display:flex;gap:12px;justify-content:center;padding:10px 16px 4px;flex-wrap:wrap;flex-shrink:0;">
+    <div style="display:flex;gap:8px;background:rgba(0,0,0,.2);border-radius:14px;padding:6px 10px;">
+      <button id="sylword-btn-2" onclick="sylwordSetLen(2)" class="sylword-opt-btn sylword-opt-active">2 sílabas</button>
+      <button id="sylword-btn-3" onclick="sylwordSetLen(3)" class="sylword-opt-btn">3 sílabas</button>
+    </div>
+    <div style="display:flex;gap:8px;background:rgba(0,0,0,.2);border-radius:14px;padding:6px 10px;">
+      <button id="sylword-btn-easy" onclick="sylwordSetDiff('easy')" class="sylword-opt-btn sylword-opt-active">🟢 Fácil</button>
+      <button id="sylword-btn-hard" onclick="sylwordSetDiff('hard')" class="sylword-opt-btn">🔴 Difícil</button>
+    </div>
+  </div>
+  <div style="display:flex;gap:10px;justify-content:center;padding:8px 16px 16px;flex-shrink:0;">
+    <button id="sylword-start-btn" onclick="startSylWord()" disabled style="background:var(--accent);border:none;border-radius:14px;padding:12px 32px;font-family:'Fredoka One',cursive;font-size:1.2rem;color:var(--ink);cursor:pointer;box-shadow:0 4px 0 rgba(0,0,0,.2);opacity:.5;transition:opacity .2s;">¡Jugar! ▶</button>
+  </div>
+</div>
+
+<!-- FORMA POR SÍLABAS — juego -->
+<div id="sylword-game" class="screen">
+  <div class="game-topbar">
+    <button class="back-btn" onclick="stopSylWord(); showScreen('sylword-welcome')">← Volver</button>
+    <div class="game-title" id="sylword-title">Forma por Sílabas</div>
+    <div class="score-pill" id="sylword-score">⭐ 0</div>
+  </div>
+  <!-- Emoji grande + palabra objetivo -->
+  <div id="sylword-emoji" style="text-align:center;font-size:5rem;line-height:1;padding:8px 0 2px;flex-shrink:0;">🎯</div>
+  <div id="sylword-target" style="text-align:center;font-family:'Fredoka One',cursive;font-size:1.6rem;color:#fff;letter-spacing:4px;padding:0 0 6px;min-height:2.2rem;flex-shrink:0;"></div>
+  <!-- Sílabas recogidas -->
+  <div id="sylword-collected" style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;min-height:54px;align-items:center;padding:0 16px 4px;flex-shrink:0;"></div>
+  <!-- Sílabas disponibles mezcladas -->
+  <div id="sylword-options" style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;padding:8px 16px 8px;flex-shrink:0;"></div>
+  <!-- Feedback -->
+  <div id="sylword-feedback" style="text-align:center;font-family:'Fredoka One',cursive;font-size:1.3rem;min-height:2rem;padding:4px;flex-shrink:0;"></div>
+  <!-- Botón siguiente (oculto hasta acertar) -->
+  <div style="display:flex;justify-content:center;padding:4px 16px 12px;flex-shrink:0;">
+    <button id="sylword-next-btn" onclick="sylwordNextWord()" hidden style="background:var(--accent);border:none;border-radius:14px;padding:12px 32px;font-family:'Fredoka One',cursive;font-size:1.1rem;color:var(--ink);cursor:pointer;box-shadow:0 4px 0 rgba(0,0,0,.2);">Siguiente ▶</button>
+  </div>
+</div>
+
+<!-- MEMORY WELCOME -->
+<div id="memory-welcome" class="screen">
+  <div class="game-topbar">
+    <button class="back-btn" onclick="showScreen('main-menu')">← Volver</button>
+    <div class="game-title">🃏 Memoria de Sílabas</div>
+    <div style="width:80px"></div>
+  </div>
+  <div style="overflow-y:auto;flex:1;padding:8px 16px 16px;display:flex;flex-direction:column;gap:14px;align-items:center;">
+    <!-- Modo -->
+    <div style="width:100%;max-width:480px;">
+      <div style="font-family:'Fredoka One',cursive;color:rgba(255,255,255,.8);font-size:.95rem;margin-bottom:6px;">Modo de juego</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <button id="mem-btn-sil" onclick="memSetMode('silabas')" class="sylword-opt-btn sylword-opt-active">🔤 Sílabas iguales</button>
+        <button id="mem-btn-word" onclick="memSetMode('palabras')" class="sylword-opt-btn">🖼️ Palabra + Emoji</button>
+      </div>
+    </div>
+    <!-- Número de parejas -->
+    <div style="width:100%;max-width:480px;">
+      <div style="font-family:'Fredoka One',cursive;color:rgba(255,255,255,.8);font-size:.95rem;margin-bottom:6px;">Número de parejas</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;" id="mem-pairs-btns">
+        <button onclick="memSetPairs(5)"  class="sylword-opt-btn sylword-opt-active" data-pairs="5">5</button>
+        <button onclick="memSetPairs(6)"  class="sylword-opt-btn" data-pairs="6">6</button>
+        <button onclick="memSetPairs(8)"  class="sylword-opt-btn" data-pairs="8">8</button>
+        <button onclick="memSetPairs(10)" class="sylword-opt-btn" data-pairs="10">10</button>
+        <button onclick="memSetPairs(12)" class="sylword-opt-btn" data-pairs="12">12</button>
+      </div>
+    </div>
+    <!-- Consonantes (solo modo sílabas) -->
+    <div style="width:100%;max-width:480px;" id="mem-con-section">
+      <div style="font-family:'Fredoka One',cursive;color:rgba(255,255,255,.8);font-size:.95rem;margin-bottom:6px;">Tipo de sílaba</div>
+      <div style="display:flex;gap:8px;margin-bottom:10px;justify-content:center;">
+        <button id="mem-btn-basic"    onclick="memSetLevel('basic')"    class="sylword-opt-btn sylword-opt-active">⭐ Básico</button>
+        <button id="mem-btn-advanced" onclick="memSetLevel('advanced')" class="sylword-opt-btn">🌟 Avanzado</button>
+      </div>
+      <div id="mem-con-grid" class="consonant-grid"></div>
+    </div>
+    <button id="mem-start-btn" onclick="startMemory()" disabled style="background:var(--accent);border:none;border-radius:14px;padding:12px 32px;font-family:'Fredoka One',cursive;font-size:1.2rem;color:var(--ink);cursor:pointer;box-shadow:0 4px 0 rgba(0,0,0,.2);opacity:.5;transition:opacity .2s;margin-top:4px;">¡Jugar! ▶</button>
+  </div>
+</div>
+
+<!-- MEMORY GAME -->
+<div id="memory-game" class="screen">
+  <div class="game-topbar">
+    <button class="back-btn" onclick="stopMemory(); showScreen('memory-welcome')">← Volver</button>
+    <div class="game-title" id="mem-title">Memoria</div>
+    <div class="score-pill" id="mem-score">⭐ 0</div>
+  </div>
+  <div style="flex:1;display:flex;align-items:center;justify-content:center;overflow-y:auto;padding:10px 16px 16px;">
+    <div id="mem-board" style="display:grid;gap:10px;"></div>
+  </div>
+  <div id="mem-feedback" style="text-align:center;font-family:'Fredoka One',cursive;font-size:1.2rem;height:2.2rem;line-height:2.2rem;padding:0 16px;flex-shrink:0;overflow:hidden;"></div>
+</div>
+
+<!-- LEE Y UNE — elegir opciones -->
+<div id="leeune-welcome" class="screen">
+  <div class="game-topbar">
+    <button class="back-btn" onclick="showScreen('main-menu')">← Volver</button>
+    <div class="game-title">📖 Lee tu Coche</div>
+    <div style="width:80px"></div>
+  </div>
+  <div class="welcome-road" style="margin:8px auto;">
+    <div class="preview-car">🚗</div>
+  </div>
+  <div class="grid-title" style="margin-top:4px;" id="lu-grid-title">Elige las consonantes con las que jugar</div>
+  <div style="display:flex;gap:8px;margin:4px 0 6px;flex-shrink:0;justify-content:center;">
+    <button id="lu-btn-basic"    onclick="luSetLevel('basic')"    class="sylword-opt-btn sylword-opt-active">⭐ Básico</button>
+    <button id="lu-btn-advanced" onclick="luSetLevel('advanced')" class="sylword-opt-btn">🌟 Avanzado</button>
+  </div>
+  <div style="display:flex;justify-content:center;width:100%;flex-shrink:0;">
+    <div id="lu-con-grid" class="consonant-grid" style="max-width:480px;width:100%;"></div>
+  </div>
+  <div style="display:flex;gap:8px;justify-content:center;padding:8px 16px 4px;flex-shrink:0;">
+    <div style="display:flex;gap:8px;background:rgba(0,0,0,.2);border-radius:14px;padding:6px 10px;">
+      <button id="lu-btn-2" onclick="luSetLen(2)" class="sylword-opt-btn sylword-opt-active">2 sílabas</button>
+      <button id="lu-btn-3" onclick="luSetLen(3)" class="sylword-opt-btn">3 sílabas</button>
+      <button id="lu-btn-0" onclick="luSetLen(0)" class="sylword-opt-btn">Más sílabas</button>
+    </div>
+  </div>
+  <div style="display:flex;justify-content:center;padding:10px 16px 16px;flex-shrink:0;">
+    <button id="lu-start-btn" onclick="startLeeUne()" disabled style="background:var(--accent);border:none;border-radius:14px;padding:12px 36px;font-family:'Fredoka One',cursive;font-size:1.2rem;color:var(--ink);cursor:pointer;box-shadow:0 4px 0 rgba(0,0,0,.2);opacity:.5;transition:opacity .2s;">¡Jugar! ▶</button>
+  </div>
+</div>
+
+<!-- LEE Y UNE — juego -->
+<div id="leeune-game" class="screen">
+  <div class="game-topbar">
+    <button class="back-btn" onclick="stopLeeUne(); showScreen('leeune-welcome')">← Volver</button>
+    <div class="game-title">📖 Lee tu Coche</div>
+    <div class="score-pill" id="lu-score">⭐ 0</div>
+  </div>
+  <!-- Carretera única con el coche que lleva la palabra -->
+  <div id="lu-road-wrap" style="flex:1;min-height:0;position:relative;margin:8px 12px 10px;border-radius:12px;overflow:hidden;background:#3a3a4a;box-shadow:0 2px 12px rgba(0,0,0,.35);touch-action:none;user-select:none;">
+    <div id="lu-lane-lines" style="position:absolute;inset:0;pointer-events:none;z-index:1;"></div>
+    <div id="lu-lane-emojis" style="position:absolute;inset:0;pointer-events:none;z-index:5;"></div>
+    <div id="lu-car" style="position:absolute;z-index:10;cursor:grab;touch-action:none;user-select:none;display:flex;flex-direction:column;align-items:center;gap:0;overflow:visible;"></div>
+  </div>
+  <div id="lu-feedback" style="text-align:center;font-family:'Fredoka One',cursive;font-size:1.3rem;height:2.2rem;line-height:2.2rem;padding:0 16px;flex-shrink:0;overflow:hidden;"></div>
+</div>
+
+<!-- DICTADO LOCO — welcome -->
+<div id="dictado-welcome" class="screen">
+  <div class="game-topbar">
+    <button class="back-btn" onclick="showScreen('main-menu')">← Volver</button>
+    <div class="game-title">🎤 Dictado Loco</div>
+    <div style="width:80px"></div>
+  </div>
+  <div class="grid-title" id="dl-grid-title">Elige las consonantes con las que practicar</div>
+  <div style="display:flex;gap:8px;margin:4px 0 6px;flex-shrink:0;justify-content:center;flex-wrap:wrap;">
+    <button id="dl-btn-basic"    onclick="dlSetLevel('basic')"    class="sylword-opt-btn sylword-opt-active">⭐ Básico — elige la sílaba</button>
+    <button id="dl-btn-advanced" onclick="dlSetLevel('advanced')" class="sylword-opt-btn">🌟 Avanzado — escríbela</button>
+  </div>
+  <div style="display:flex;justify-content:center;width:100%;flex-shrink:0;">
+    <div id="dl-con-grid" class="consonant-grid" style="max-width:480px;width:100%;"></div>
+  </div>
+  <div style="display:flex;gap:12px;justify-content:center;padding:6px 16px 4px;flex-wrap:wrap;flex-shrink:0;">
+    <div style="display:flex;gap:8px;background:rgba(0,0,0,.2);border-radius:14px;padding:6px 10px;">
+      <button id="dl-btn-simple"  onclick="dlSetType('simple')"  class="sylword-opt-btn sylword-opt-active">Simple (MA, BO…)</button>
+      <button id="dl-btn-cluster" onclick="dlSetType('cluster')" class="sylword-opt-btn">Trabadas (BRA, TRE…)</button>
+    </div>
+  </div>
+  <div style="display:flex;gap:10px;justify-content:center;padding:8px 16px 16px;flex-shrink:0;">
+    <button id="dl-start-btn" onclick="startDictado()" disabled
+      style="background:var(--accent);border:none;border-radius:14px;padding:12px 32px;font-family:'Fredoka One',cursive;font-size:1.2rem;color:var(--ink);cursor:pointer;box-shadow:0 4px 0 rgba(0,0,0,.2);opacity:.5;transition:opacity .2s;">
+      ¡Jugar! ▶
+    </button>
+  </div>
+</div>
+
+<!-- DICTADO LOCO — juego -->
+<div id="dictado-game" class="screen">
+  <div class="game-topbar">
+    <button class="back-btn" onclick="stopDictado(); showScreen('dictado-welcome')">← Volver</button>
+    <div class="game-title">🎤 Dictado Loco</div>
+    <div class="score-pill" id="dl-score">⭐ 0</div>
+  </div>
+
+  <!-- Botón escuchar -->
+  <div style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:14px 16px 6px;flex-shrink:0;">
+    <button id="dl-listen-btn" onclick="dlPlayCurrent()" class="con-btn"
+      style="width:100px;height:100px;border-radius:50%;font-size:3rem;justify-content:center;">
+      🔊
+    </button>
+    <div class="grid-title" style="margin:0;padding:0;font-size:.85rem;">Toca para escuchar</div>
+  </div>
+
+  <!-- Respuesta construida (avanzado) -->
+  <div id="dl-answer-display" style="display:flex;gap:6px;justify-content:center;align-items:center;min-height:60px;flex-shrink:0;padding:0 16px;"></div>
+
+  <!-- Opciones básico / teclado avanzado -->
+  <div id="dl-options-wrap" style="flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;padding:4px 16px 4px;"></div>
+
+  <!-- Feedback -->
+  <div id="dl-feedback" style="text-align:center;font-family:'Fredoka One',cursive;font-size:1.3rem;height:2.4rem;line-height:2.4rem;flex-shrink:0;"></div>
+</div>
+
 <div class="confetti-layer" id="confetti-layer"></div>
 
 <script>
@@ -600,17 +854,45 @@ var NUM_ROADS  = 3;
 var currentCon = null;
 var score = 0;
 
+// ── GRUPOS CONSONÁNTICOS ──────────────────────────────
+var CLUSTERS = [
+  {c:'BL',color:'#e53935'},{c:'BR',color:'#c62828'},
+  {c:'CL',color:'#8e24aa'},{c:'CR',color:'#6a1b9a'},
+  {c:'DR',color:'#0288d1'},
+  {c:'FL',color:'#f06292'},{c:'FR',color:'#e91e63'},
+  {c:'GL',color:'#388e3c'},{c:'GR',color:'#2e7d32'},
+  {c:'PL',color:'#283593'},{c:'PR',color:'#1565c0'},
+  {c:'TR',color:'#37474f'}
+];
+
+var vdLevel = 'basic'; // 'basic' | 'advanced'
+
+function vdSetLevel(lvl) {
+  vdLevel = lvl;
+  document.getElementById('vd-btn-basic').classList.toggle('sylword-opt-active', lvl === 'basic');
+  document.getElementById('vd-btn-advanced').classList.toggle('sylword-opt-active', lvl === 'advanced');
+  document.getElementById('vd-grid-title').textContent =
+    lvl === 'basic' ? '¿Con qué consonante quieres jugar?' : '¿Con qué grupo quieres jugar?';
+  vdBuildGrid();
+}
+
+function vdBuildGrid() {
+  var grid = document.getElementById('consonant-grid');
+  grid.innerHTML = '';
+  var list = vdLevel === 'basic' ? CONSONANTS : CLUSTERS;
+  list.forEach(function(con) {
+    var btn = document.createElement('button');
+    btn.className = 'con-btn';
+    btn.innerHTML =
+      '<span class="con-letter" style="color:'+con.color+'">'+con.c+'</span>' +
+      '<span class="con-sub">+vocal</span>';
+    btn.addEventListener('click', function(){ startGame(con); });
+    grid.appendChild(btn);
+  });
+}
+
 // ── WELCOME ───────────────────────────────────────────
-var grid = document.getElementById('consonant-grid');
-CONSONANTS.forEach(function(con) {
-  var btn = document.createElement('button');
-  btn.className = 'con-btn';
-  btn.innerHTML =
-    '<span class="con-letter" style="color:'+con.color+'">'+con.c+'</span>' +
-    '<span class="con-sub">+vocal</span>';
-  btn.addEventListener('click', function(){ startGame(con); });
-  grid.appendChild(btn);
-});
+vdBuildGrid();
 
 function showScreen(id) {
   document.querySelectorAll('.screen').forEach(function(s){ s.classList.remove('active'); });
@@ -621,15 +903,20 @@ function showScreen(id) {
 
 // ── GAME SETUP ────────────────────────────────────────
 function conLabel(con) {
-  // La Q siempre va con U: mostrar QU en el coche
   return con.c === 'Q' ? 'QU' : con.c;
 }
 function conVowels(con) {
-  // La Q solo forma QUE y QUI
   return con.c === 'Q' ? ['E','I'] : VOWELS.slice();
 }
 function sylFor(con, vowel) {
-  return con.c === 'Q' ? 'QU' + vowel : con.c + vowel;
+  // Grupos consonánticos: BLA, BLE... — audio key es el grupo + vocal
+  if (con.c === 'Q') return 'QU' + vowel;
+  return con.c + vowel;
+}
+function sylAudioKey(con, vowel) {
+  // Para AUDIO_MAP: grupos usan la clave directa (BLA, BRE, etc.)
+  if (con.c === 'Q') return 'QU' + vowel;
+  return con.c + vowel;
 }
 
 function startGame(con) {
@@ -877,26 +1164,66 @@ function applyDriveTextState() {
   if (cb) cb.checked = driveShowText;
 }
 
-// Poblar grid de consonantes para Conduce
-var driveGrid = document.getElementById('drive-consonant-grid');
-CONSONANTS.forEach(function(con) {
-  var btn = document.createElement('button');
-  btn.className = 'con-btn';
-  btn.innerHTML =
-    '<span class="con-letter" style="color:'+con.color+'">'+con.c+'</span>' +
-    '<span class="con-sub">+vocal</span>';
-  btn.addEventListener('click', function(){ startDrive(con); });
-  driveGrid.appendChild(btn);
-});
+// Selección múltiple de consonantes para Conduce
+var driveSelectedCons = [];
+var driveLevel = 'basic'; // 'basic' | 'advanced'
+
+function driveSetLevel(lvl) {
+  driveLevel = lvl;
+  document.getElementById('drive-btn-basic').classList.toggle('sylword-opt-active', lvl === 'basic');
+  document.getElementById('drive-btn-advanced').classList.toggle('sylword-opt-active', lvl === 'advanced');
+  document.getElementById('drive-grid-title').textContent =
+    lvl === 'basic' ? '¿Con qué consonante quieres jugar?' : '¿Con qué grupo quieres jugar?';
+  driveBuildGrid();
+}
+
+function driveBuildGrid() {
+  var grid = document.getElementById('drive-consonant-grid');
+  grid.innerHTML = '';
+  driveSelectedCons = [];
+  document.getElementById('drive-start-btn').disabled = true;
+  var list = driveLevel === 'basic' ? CONSONANTS : CLUSTERS;
+  list.forEach(function(con) {
+    var btn = document.createElement('button');
+    btn.className = 'con-btn';
+    btn.id = 'drive-con-btn-' + con.c;
+    btn.innerHTML =
+      '<span class="con-letter" style="color:'+con.color+'">'+con.c+'</span>' +
+      '<span class="con-sub">+vocal</span>';
+    btn.addEventListener('click', function() {
+      var idx = driveSelectedCons.indexOf(con.c);
+      if (idx >= 0) {
+        driveSelectedCons.splice(idx, 1);
+        btn.classList.remove('con-selected');
+      } else {
+        driveSelectedCons.push(con.c);
+        btn.classList.add('con-selected');
+      }
+      document.getElementById('drive-start-btn').disabled = driveSelectedCons.length === 0;
+    });
+    grid.appendChild(btn);
+  });
+}
+driveBuildGrid();
 
 function startDrive(con) {
-  driveCon   = con;
+  // Compatibilidad: si se llama con una consonante sola
+  driveSelectedCons = [con.c];
+  startDriveMulti();
+}
+
+function startDriveMulti() {
+  if (driveSelectedCons.length === 0) return;
+  // Elegir consonante aleatoria de las seleccionadas para el primer turno
+  var drivePool = driveLevel === 'advanced' ? CLUSTERS : CONSONANTS;
+  driveCon = drivePool.filter(function(c){ return driveSelectedCons.indexOf(c.c) >= 0; })[0];
   driveScore = 0;
   driveActive = true;
   driveHadError = false;
   driveGen++;
   document.getElementById('drive-score').textContent = '⭐ 0';
-  document.getElementById('drive-title').textContent = 'Conduce con ' + conLabel(con);
+  var label = driveSelectedCons.length === 1 ? 'Conduce con ' + driveSelectedCons[0] : 'Conduce con ' + driveSelectedCons.join(', ');
+  document.getElementById('drive-title').textContent = label;
   document.getElementById('drive-syl-display').textContent = '--';
   applyDriveTextState();
   showScreen('drive-game');
@@ -908,14 +1235,89 @@ function stopDrive() {
   window.speechSynthesis && window.speechSynthesis.cancel();
 }
 
+function driveRepeatSyl() {
+  if (!driveTarget) return;
+  var isSyl = driveTarget.length > 1;
+  var syl = isSyl ? driveTarget : sylFor(driveCon, driveTarget);
+  speakLoud(syl);
+}
+
 var driveCurrentVowels = [];  // las 3 vocales en juego ahora
+var driveSylConMap = {};      // mapa sílaba→consonante para modo múltiple
+
+function drivePickRandomCon() {
+  // Elegir consonante al azar de las seleccionadas
+  var drivePool = driveLevel === 'advanced' ? CLUSTERS : CONSONANTS;
+  var cons = drivePool.filter(function(c){ return driveSelectedCons.indexOf(c.c) >= 0; });
+  return cons[Math.floor(Math.random() * cons.length)];
+}
+
+// Modo palabra avanzado: banco de palabras con emojis para el juego de carreteras
 
 function buildDriveRoads(cb) {
-  // Para Q: solo E e I; para el resto: 3 al azar de las 5
-  var available = conVowels(driveCon);
-  var shuffled = shuffleArr(available.slice()).slice(0, Math.min(NUM_ROADS, available.length));
-  driveCurrentVowels = shuffled.slice();
-  buildDriveRoadsWithVowels(driveCurrentVowels, cb);
+  var drivePool = driveLevel === 'advanced' ? CLUSTERS : CONSONANTS;
+  var cons = drivePool.filter(function(c){ return driveSelectedCons.indexOf(c.c) >= 0; });
+
+  if (cons.length === 1) {
+    driveCon = cons[0];
+    driveSylConMap = {};
+    var available2 = conVowels(driveCon);
+    var shuffled = shuffleArr(available2.slice()).slice(0, Math.min(NUM_ROADS, available2.length));
+    driveCurrentVowels = shuffled.slice();
+    buildDriveRoadsWithVowels(driveCurrentVowels, cb);
+  } else {
+    var pool = [];
+    cons.forEach(function(con) {
+      conVowels(con).forEach(function(v) {
+        pool.push({ con: con, v: v, syl: sylFor(con, v) });
+      });
+    });
+    var picked2 = shuffleArr(pool).slice(0, NUM_ROADS);
+    driveCurrentVowels = picked2;
+    driveCon = picked2[0].con;
+    driveSylConMap = {};
+    picked2.forEach(function(s){ driveSylConMap[s.syl] = s.con; });
+    buildDriveRoadsWithSyls(driveCurrentVowels, cb);
+  }
+}
+
+
+function buildDriveRoadsWithSyls(sylObjs, cb) {
+  // sylObjs: [{con, v, syl}, ...]
+  // Cada carril: coche con su consonante, tarjeta muestra solo la vocal,
+  // pero el identificador interno es la sílaba completa.
+  var area = document.getElementById('drive-roads-area');
+  area.innerHTML = '';
+  driveRoadData = [];
+  var built = 0;
+  for (var i = 0; i < sylObjs.length; i++) {
+    var row = document.createElement('div');
+    row.className = 'road-row';
+    var surface = document.createElement('div');
+    surface.className = 'road-surface';
+    row.appendChild(surface);
+    area.appendChild(row);
+    (function(rowEl, sylObj, idx) {
+      setTimeout(function(){
+        // Fijar driveCon temporalmente para que buildDriveRoad use el coche correcto
+        var savedCon = driveCon;
+        driveCon = sylObj.con;
+        var data = buildDriveRoad(rowEl, [sylObj.v]);
+        driveCon = savedCon;
+        // Cambiar el identificador de la tarjeta a la sílaba completa
+        // y dejar el texto visual como solo la vocal
+        if (data.cards[0]) {
+          data.cards[0].v   = sylObj.syl;
+          data.cards[0].syl = sylObj.syl;  // necesario para driveCheckHit
+          data.cards[0].el.dataset.vowel = sylObj.syl;
+          data.cards[0].el.textContent = sylObj.v; // solo vocal visualmente
+        }
+        driveRoadData[idx] = data;
+        built++;
+        if (built === sylObjs.length && cb) cb();
+      }, 80);
+    })(row, sylObjs[i], i);
+  }
 }
 
 function buildDriveRoadsWithVowels(vowels, cb) {
@@ -963,9 +1365,10 @@ function buildDriveRoad(row, vowels) {
   var car = document.createElement('div');
   car.className = 'car-obj';
   car.style.cssText = 'left:'+carLeft+'px;top:'+carTop+'px;width:'+unitW+'px;height:'+carH+'px;';
+  // El coche muestra la consonante actual (puede cambiar entre rondas)
   car.innerHTML =
     carSVG(driveCon.color, carW, carH) +
-    '<div class="car-con-label" style="width:'+cardSz+'px;height:'+cardSz+'px;font-size:'+cardFont+'px;flex-shrink:0;margin-left:-6px;">'+driveCon.c+'</div>';
+    '<div class="car-con-label" id="drive-car-label-'+Math.random().toString(36).slice(2)+'" style="width:'+cardSz+'px;height:'+cardSz+'px;font-size:'+cardFont+'px;flex-shrink:0;margin-left:-6px;">'+conLabel(driveCon)+'</div>';
   row.appendChild(car);
 
   var usableRight2 = W - cardSz - 10;
@@ -1043,13 +1446,13 @@ function buildDriveRoad(row, vowels) {
 }
 
 function driveCheckHit(cd, bubble, carLeft, car) {
-  if (cd.v === driveTarget) {
+  if (cd.v === driveTarget || cd.syl === driveTarget) {
     // ¡Correcto!
     cd.el.style.transition = 'opacity .2s, transform .2s';
     cd.el.style.opacity = '0';
     cd.el.style.transform = 'scale(0.5)';
 
-    var syl = sylFor(driveCon, cd.v);
+    var syl = cd.syl || sylFor(driveCon, cd.v);
     bubble.textContent = syl;
     bubble.style.left = (carLeft + 30) + 'px';
     bubble.classList.remove('show');
@@ -1071,7 +1474,10 @@ function driveCheckHit(cd, bubble, carLeft, car) {
       setTimeout(function(){
         if (driveGen !== myGen) return; // ronda cancelada
         driveActive = true;
-        buildDriveRoadsWithVowels(driveCurrentVowels, function(){ driveNextRound(); });
+        var rebuildFn = (driveCurrentVowels.length > 0 && typeof driveCurrentVowels[0] === 'object')
+          ? function(cb){ buildDriveRoadsWithSyls(driveCurrentVowels, cb); }
+          : function(cb){ buildDriveRoadsWithVowels(driveCurrentVowels, cb); };
+        rebuildFn(function(){ driveNextRound(); });
       }, 1500);
     } else {
       // Acertó sin ningún fallo — avanzar a vocales nuevas
@@ -1097,9 +1503,12 @@ function driveCheckHit(cd, bubble, carLeft, car) {
     setTimeout(function(){
       if (driveGen !== myGen) return;
       driveActive = true;
-      buildDriveRoadsWithVowels(driveCurrentVowels, function(){
+      var rebuildFn2 = (driveCurrentVowels.length > 0 && typeof driveCurrentVowels[0] === 'object')
+        ? function(cb){ buildDriveRoadsWithSyls(driveCurrentVowels, cb); }
+        : function(cb){ buildDriveRoadsWithVowels(driveCurrentVowels, cb); };
+      rebuildFn2(function(){
         driveTarget = keepTarget;
-        var syl = driveCon.c + keepTarget;
+        var syl = keepTarget.length > 1 ? keepTarget : sylFor(driveCon, keepTarget);
         document.getElementById('drive-syl-display').textContent = syl;
         applyDriveTextState();
         speakLoud(syl);
@@ -1113,18 +1522,19 @@ function driveNextRound() {
   driveRoadData.forEach(function(rd){
     if (!rd) return;
     rd.cards.forEach(function(cd){
-      if (cd.el.style.opacity !== '0' && cd.el.parentNode) remaining.push(cd.v);
+      if (cd.el.style.opacity !== '0' && cd.el.parentNode) remaining.push(cd);
     });
   });
 
-  if (remaining.length === 0) return; // no debería ocurrir, buildDriveRoads ya pone 3 nuevas
+  if (remaining.length === 0) return;
 
-  driveTarget = remaining[Math.floor(Math.random() * remaining.length)];
-  var syl = sylFor(driveCon, driveTarget);
+  var picked = remaining[Math.floor(Math.random() * remaining.length)];
+  driveTarget = picked.v; // emoji en modo palabra, vocal/sílaba en modo normal
+
+  var isSyl = driveTarget.length > 1;
+  var syl = isSyl ? driveTarget : sylFor(driveCon, driveTarget);
   document.getElementById('drive-syl-display').textContent = syl;
   applyDriveTextState();
-
-  // Hablar fuerte y claro: cancelar, esperar y lanzar
   speakLoud(syl);
 }
 
@@ -2467,7 +2877,6 @@ var wordGen2 = 0;
 function wordBuildGrid() {
   var grid = document.getElementById('word-letter-grid');
   grid.innerHTML = '';
-  // Letras disponibles según tipos activos
   var validLetters = wordGetValidLetters();
   CONSONANTS.forEach(function(con) {
     var available = validLetters.indexOf(con.c) >= 0;
@@ -2496,11 +2905,15 @@ function wordBuildGrid() {
 }
 
 function wordGetValidLetters() {
-  // Letras que aparecen en palabras de los tipos activos
   var lettersSet = {};
   WORD_BANK.forEach(function(entry) {
     if (!wordActiveTypes[entry.t]) return;
-    entry.l.forEach(function(l){ lettersSet[l] = true; });
+    if (entry.t === 'T') {
+      // Para trabadas solo la consonante inicial activa el botón del grid
+      lettersSet[entry.l[0]] = true;
+    } else {
+      entry.l.forEach(function(l){ lettersSet[l] = true; });
+    }
   });
   return Object.keys(lettersSet);
 }
@@ -2537,9 +2950,13 @@ function wordUpdateStartBtn() {
 }
 
 function wordGetWords() {
-  // Palabras que usan SOLO letras seleccionadas y son del tipo activo
   return WORD_BANK.filter(function(entry) {
     if (!wordActiveTypes[entry.t]) return false;
+    if (entry.t === 'T') {
+      // Trabadas: basta con que la consonante inicial esté seleccionada
+      return wordSelectedCons.indexOf(entry.l[0]) >= 0;
+    }
+    // Directas e Inversas: todas las letras deben estar seleccionadas
     return entry.l.every(function(l){ return wordSelectedCons.indexOf(l) >= 0; });
   });
 }
@@ -2620,6 +3037,1615 @@ function stopWord() {
   });
   wordBuildGrid();
 })();
+
+// ══════════════════════════════════════════════════════════
+// FORMA TU PALABRA POR SÍLABAS
+// ══════════════════════════════════════════════════════════
+
+// ── Banco de palabras reales con emoji ──
+// Formato: { s: ['MO','SA'], e: '🪰', c: ['M','S'] }
+// s = sílabas en orden, e = emoji, c = consonantes usadas
+// Solo sílabas que existen en AUDIO_MAP (sin acentos, combinaciones válidas)
+var SYLWORD_BANK = [
+  // ── 2 sílabas ──────────────────────────────────────────
+  {s:['BO','CA'], e:'👄', c:['B','C']},
+  {s:['BO','LA'], e:'⚽', c:['B','L']},
+  {s:['BO','TA'], e:'👟', c:['B','T']},
+  {s:['BE','SO'], e:'💋', c:['B','S']},
+  {s:['CA','SA'], e:'🏠', c:['C','S']},
+  {s:['CA','MA'], e:'🛏️', c:['C','M']},
+  {s:['CO','PA'], e:'🏆', c:['C','P']},
+  {s:['CU','BO'], e:'🟦', c:['C','B']},
+  {s:['CU','NA'], e:'🛏️', c:['C','N']},
+  {s:['CA','PA'], e:'🧥', c:['C','P']},
+  {s:['CE','NA'], e:'🍽️', c:['C','N']},
+  {s:['CO','CHE'], e:'🚗', c:['C','CH']},
+  {s:['DE','DO'], e:'☝️', c:['D']},
+  {s:['DA','MA'], e:'♟️', c:['D','M']},
+  {s:['FO','CO'], e:'🔦', c:['F','C']},
+  {s:['FI','LA'], e:'🚶', c:['F','L']},
+  {s:['FRE','SA'], e:'🍓', c:['F','R','S']},
+  {s:['GA','TO'], e:'🐱', c:['G','T']},
+  {s:['GA','LO'], e:'🐓', c:['G','L']},
+  {s:['GO','MA'], e:'🧹', c:['G','M']},
+  {s:['LU','NA'], e:'🌙', c:['L','N']},
+  {s:['LA','TA'], e:'🥫', c:['L','T']},
+  {s:['LO','BO'], e:'🐺', c:['L','B']},
+  {s:['LU','PA'], e:'🔍', c:['L','P']},
+  {s:['LLA','VE'], e:'🔑', c:['LL','V']},
+  {s:['MA','NO'], e:'✋', c:['M','N']},
+  {s:['ME','SA'], e:'🪑', c:['M','S']},
+  {s:['MO','NO'], e:'🐒', c:['M','N']},
+  {s:['MA','PA'], e:'🗺️', c:['M','P']},
+  {s:['NO','TA'], e:'🎵', c:['N','T']},
+  {s:['PE','RA'], e:'🍐', c:['P','R']},
+  {s:['PI','NO'], e:'🌲', c:['P','N']},
+  {s:['PO','LO'], e:'🧊', c:['P','L']},
+  {s:['PA','TO'], e:'🦆', c:['P','T']},
+  {s:['PO','LLO'], e:'🍗', c:['P','LL']},
+  {s:['RA','NA'], e:'🐸', c:['R','N']},
+  {s:['RO','SA'], e:'🌹', c:['R','S']},
+  {s:['RE','MO'], e:'🚣', c:['R','M']},
+  {s:['RO','PA'], e:'👗', c:['R','P']},
+  {s:['SO','FA'], e:'🛋️', c:['S','F']},
+  {s:['SO','PA'], e:'🍲', c:['S','P']},
+  {s:['SA','CO'], e:'🎒', c:['S','C']},
+  {s:['SI','LLA'], e:'🪑', c:['S','LL']},
+  {s:['TA','ZA'], e:'☕', c:['T','Z']},
+  {s:['TU','BO'], e:'🔧', c:['T','B']},
+  {s:['TE','LA'], e:'🧵', c:['T','L']},
+  {s:['TO','RO'], e:'🐂', c:['T','R']},
+  {s:['VA','CA'], e:'🐄', c:['V','C']},
+  {s:['VA','SO'], e:'🥛', c:['V','S']},
+  {s:['VE','LA'], e:'🕯️', c:['V','L']},
+  {s:['VI','DA'], e:'❤️', c:['V','D']},
+  {s:['ZO','RRO'], e:'🦊', c:['Z','R']},
+  {s:['ZU','MO'], e:'🧃', c:['Z','M']},
+  {s:['BRU','JA'], e:'🧙', c:['B','R','J']},
+  // ── 3 sílabas ──────────────────────────────────────────
+  {s:['CA','MI','SA'], e:'👕', c:['C','M','S']},
+  {s:['CA','BE','ZA'], e:'👤', c:['C','B','Z']},
+  {s:['CA','BA','LLO'], e:'🐴', c:['C','B','LL']},
+  {s:['CO','NE','JO'], e:'🐰', c:['C','N','J']},
+  {s:['CU','LE','BRA'], e:'🐍', c:['C','L','B']},
+  {s:['CO','CI','NA'], e:'🍳', c:['C','N']},
+  {s:['CE','RE','ZA'], e:'🍒', c:['C','R','Z']},
+  {s:['PA','LO','MA'], e:'🕊️', c:['P','L','M']},
+  {s:['PE','LO','TA'], e:'⚽', c:['P','L','T']},
+  {s:['PLA','TA','NO'], e:'🍌', c:['P','L','T','N']},
+  {s:['PE','PI','NO'], e:'🥒', c:['P','N']},
+  {s:['MA','CE','TA'], e:'🪴', c:['M','C','T']},
+  {s:['MO','CHI','LA'], e:'🎒', c:['M','CH','L']},
+  {s:['MU','ÑE','CA'], e:'🪆', c:['M','Ñ','C']},
+  {s:['MAN','ZA','NA'], e:'🍎', c:['M','N','Z']},
+  {s:['TO','MA','TE'], e:'🍅', c:['T','M']},
+  {s:['TOR','TU','GA'], e:'🐢', c:['T','R','G']},
+  {s:['TI','JE','RAS'], e:'✂️', c:['T','J','R']},
+  {s:['SA','LA','DA'], e:'🥗', c:['S','L','D']},
+  {s:['NU','ME','RO'], e:'🔢', c:['N','M','R']},
+  {s:['NA','RAN','JA'], e:'🍊', c:['N','R','J']},
+  {s:['GA','LLI','NA'], e:'🐔', c:['G','LL','N']},
+  {s:['FA','RO','LA'], e:'💡', c:['F','R','L']},
+  {s:['JI','RA','FA'], e:'🦒', c:['J','R','F']},
+  {s:['BO','DE','GA'], e:'🍷', c:['B','D','G']},
+  {s:['BA','RA','JA'], e:'🃏', c:['B','R','J']},
+  {s:['LE','CHU','GA'], e:'🥬', c:['L','C','G']},
+  {s:['LI','BRO'], e:'📚', c:['L','B','R']},
+  {s:['VA','CU','NA'], e:'💉', c:['V','C','N']},
+  {s:['VEN','TA','NA'], e:'🪟', c:['V','N','T']},
+  {s:['DRA','GON'], e:'🐉', c:['D','R','G']},
+  // H
+  {s:['HI','LO'], e:'🧵', c:['H','L']},
+  {s:['HU','MO'], e:'💨', c:['H','M']},
+  {s:['HO','JA'], e:'🍂', c:['H','J']},
+  {s:['HA','DA'], e:'🧚', c:['H','D']},
+  {s:['HE','LO'], e:'🍦', c:['H','L']},
+  // J extra
+  {s:['JA','BO','NA'], e:'🧼', c:['J','B','N']},
+  {s:['JU','GUE','TE'], e:'🧸', c:['J','G','T']},
+  // V extra
+  {s:['VI','NO'], e:'🍷', c:['V','N']},
+  // Z extra
+  {s:['ZA','PA','TO'], e:'👟', c:['Z','P','T']},
+  // CH extra
+  {s:['CHI','VO'], e:'🐐', c:['CH','V']},
+  {s:['CHA','LE','CO'], e:'🦺', c:['CH','L','C']},
+  // Ñ extra
+  {s:['ÑA','ME'], e:'🍠', c:['Ñ','M']},
+  // 4 sílabas
+  {s:['MA','RI','PO','SA'], e:'🦋', c:['M','R','P','S']},
+  {s:['CA','BA','LLE','RO'], e:'🤠', c:['C','B','LL','R']},
+  {s:['CO','CO','DRI','LO'], e:'🐊', c:['C','D','R','L']},
+  {s:['CA','RA','CO','LA'], e:'🐚', c:['C','R','L']},
+  {s:['MA','RI','NE','RO'], e:'⚓', c:['M','R','N']},
+  {s:['PE','LI','CA','NO'], e:'🦢', c:['P','L','C','N']},
+  {s:['PA','LO','MI','TA'], e:'🐦', c:['P','L','M','T']},
+  {s:['CA','FE','TE','RA'], e:'🫖', c:['C','F','T','R']},
+  {s:['ES','CA','LE','RA'], e:'🪜', c:['S','C','L','R']},
+  {s:['MO','TO','CI','CLE','TA'], e:'🏍️', c:['M','T','C','CL']},
+  {s:['CHO','CO','LA','TE'], e:'🍫', c:['CH','C','L','T']},
+  {s:['ZA','PA','TE','RO'], e:'👞', c:['Z','P','T','R']},
+  {s:['CA','MA','LE','ON'], e:'🦎', c:['C','M','L']},
+  {s:['JU','GA','DO','RA'], e:'🎮', c:['J','G','D','R']},
+  {s:['VI','O','LI','NA'], e:'🎻', c:['V','L','N']},
+  {s:['HA','MA','CA'], e:'🛌', c:['H','M','C']},
+  {s:['JA','BA','LI'], e:'🐗', c:['J','B','L']},
+  {s:['HI','PO','PO','TA'], e:'🦛', c:['H','P','T']},
+];
+
+// ── Estado ──
+// ── Banco avanzado: sílabas trabadas (CCV) ──────────────────────────────
+var SYLWORD_BANK_ADV = [
+  // 2 sílabas
+  {s:['BRA','ZO'], e:'💪', c:['BR']},
+  {s:['BRI','SA'], e:'💨', c:['BR']},
+  {s:['BRU','JA'], e:'🧙', c:['BR']},
+  {s:['BRO','CHA'], e:'🖌️', c:['BR']},
+  {s:['BLU','SA'], e:'👕', c:['BL']},
+  {s:['BLO','QUE'], e:'🧱', c:['BL']},
+  {s:['CLA','VO'], e:'🔩', c:['CL']},
+  {s:['CLA','SE'], e:'🏫', c:['CL']},
+  {s:['CRU','Z'], e:'✝️', c:['CR']},
+  {s:['CRE','MA'], e:'🍦', c:['CR']},
+  {s:['DRA','GÓN'], e:'🐉', c:['DR']},
+  {s:['FLA','UT'], e:'🎵', c:['FL']},
+  {s:['FLO','R'], e:'🌸', c:['FL']},
+  {s:['FRA','SE'], e:'💬', c:['FR']},
+  {s:['FRE','SA'], e:'🍓', c:['FR']},
+  {s:['FRÍ','O'], e:'🥶', c:['FR']},
+  {s:['GRA','NO'], e:'🌾', c:['GR']},
+  {s:['GRI','TO'], e:'📣', c:['GR']},
+  {s:['GRU','PO'], e:'👥', c:['GR']},
+  {s:['GLO','BO'], e:'🎈', c:['GL']},
+  {s:['PLA','ZA'], e:'🏛️', c:['PL']},
+  {s:['PLU','MA'], e:'🪶', c:['PL']},
+  {s:['PRA','DO'], e:'🌿', c:['PR']},
+  {s:['PRE','CIO'], e:'💰', c:['PR']},
+  {s:['PRI','MO'], e:'👦', c:['PR']},
+  {s:['TRA','JE'], e:'👔', c:['TR']},
+  {s:['TRE','N'], e:'🚂', c:['TR']},
+  {s:['TRO','ZO'], e:'🍖', c:['TR']},
+  {s:['TRI','GO'], e:'🌾', c:['TR']},
+  // 3 sílabas
+  {s:['BRA','CE','TE'], e:'💍', c:['BR']},
+  {s:['BRI','LLO','SO'], e:'✨', c:['BR']},
+  {s:['CLA','VE','LES'], e:'🌷', c:['CL']},
+  {s:['CRE','CI','DO'], e:'📈', c:['CR']},
+  {s:['FLA','ME','CO'], e:'💃', c:['FL']},
+  {s:['FRE','SCU','RA'], e:'🌬️', c:['FR']},
+  {s:['GRA','TI','TUD'], e:'🙏', c:['GR']},
+  {s:['GLO','RIO','SO'], e:'🏆', c:['GL']},
+  {s:['PLÁ','TA','NO'], e:'🍌', c:['PL']},
+  {s:['PRI','MA','VE'], e:'🌸', c:['PR']},
+  {s:['TRA','VI','ESO'], e:'😈', c:['TR']},
+  {s:['TRO','PI','CAL'], e:'🌴', c:['TR']},
+  // 2 sílabas nuevas
+  {s:['FLE','CHA'], e:'🏹', c:['FL']},
+  {s:['GRA','PA'], e:'📎', c:['GR']},
+  {s:['TRO','PA'], e:'🥁', c:['TR']},
+  {s:['CRU','CE'], e:'✝️', c:['CR']},
+  {s:['PLA','TO'], e:'🍽️', c:['PL']},
+  {s:['FRU','TA'], e:'🍎', c:['FR']},
+  {s:['GRI','FO'], e:'🚿', c:['GR']},
+  {s:['TRA','PO'], e:'🧹', c:['TR']},
+  // 3 sílabas nuevas
+  {s:['CLA','RI','NE'], e:'🎺', c:['CL']},
+  {s:['TRI','CI','CLE'], e:'🚲', c:['TR','CL']},
+  {s:['GRA','NI','ZO'], e:'🌨️', c:['GR']},
+  {s:['BRI','LLO','SA'], e:'✨', c:['BR','LL']},
+];
+
+var sylwordLevel = 'basic';
+var sylwordSelectedCons = [];
+var sylwordLen = 2;        // 2 o 3
+var sylwordDiff = 'easy';  // 'easy' o 'hard'
+var sylwordScore = 0;
+var sylwordCurrentWord = null;  // { s:[...], e:'', c:[...] }
+var sylwordCollected = [];
+var sylwordShuffle = [];
+var sylwordUsed = [];
+
+// ── Estilos inline para botones de opción ──
+(function injectSylwordStyles() {
+  var style = document.createElement('style');
+  style.textContent = [
+    '.sylword-opt-btn{background:transparent;border:2px solid rgba(255,255,255,.3);border-radius:10px;padding:6px 16px;font-family:\'Fredoka One\',cursive;font-size:.95rem;color:rgba(255,255,255,.7);cursor:pointer;transition:all .15s;}',
+    '.sylword-opt-btn.sylword-opt-active{background:var(--accent);border-color:var(--accent);color:var(--ink);}',
+    '.sylword-syl-btn{min-width:60px;padding:12px 18px;border-radius:16px;border:3px solid rgba(255,255,255,.5);background:rgba(255,255,255,.12);font-family:\'Fredoka One\',cursive;font-size:1.5rem;color:#fff;cursor:pointer;transition:transform .1s,background .15s;user-select:none;}',
+    '.sylword-syl-btn:active{transform:scale(.92);}',
+    '.sylword-syl-btn.used{opacity:.25;pointer-events:none;}',
+    '.sylword-collected-chip{min-width:60px;padding:10px 16px;border-radius:14px;background:rgba(255,255,255,.22);border:2px solid rgba(255,255,255,.4);font-family:\'Fredoka One\',cursive;font-size:1.4rem;color:#fff;text-align:center;}',
+    '.sylword-collected-chip.correct{background:rgba(76,175,80,.5);border-color:#81c784;}',
+    '.sylword-collected-chip.wrong{background:rgba(244,67,54,.4);border-color:#e57373;animation:shake .3s;}',
+    '@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}'
+  ].join('\n');
+  document.head.appendChild(style);
+})();
+
+// ── Inicializar / reconstruir grid de consonantes ──
+function sylwordBuildGrid() {
+  var grid = document.getElementById('sylword-con-grid');
+  if (!grid) return;
+  grid.innerHTML = '';
+  sylwordSelectedCons = [];
+  sylwordUpdateStartBtn();
+  var list = sylwordLevel === 'advanced' ? CLUSTERS : CONSONANTS;
+  list.forEach(function(con) {
+    var btn = document.createElement('button');
+    btn.className = 'con-btn';
+    btn.id = 'sylword-con-btn-' + con.c;
+    btn.innerHTML = '<span class="con-letter" style="color:'+con.color+'">'+con.c+'</span>';
+    btn.addEventListener('click', function() {
+      var idx = sylwordSelectedCons.indexOf(con.c);
+      if (idx >= 0) { sylwordSelectedCons.splice(idx, 1); btn.classList.remove('con-selected'); }
+      else { sylwordSelectedCons.push(con.c); btn.classList.add('con-selected'); }
+      sylwordUpdateStartBtn();
+    });
+    grid.appendChild(btn);
+  });
+}
+
+function sylwordSetLevel(lvl) {
+  sylwordLevel = lvl;
+  document.getElementById('sylword-btn-basic').classList.toggle('sylword-opt-active', lvl === 'basic');
+  document.getElementById('sylword-btn-advanced').classList.toggle('sylword-opt-active', lvl === 'advanced');
+  document.getElementById('sylword-grid-title').textContent =
+    lvl === 'basic' ? 'Elige las consonantes con las que jugar' : 'Elige los grupos consonánticos';
+  sylwordBuildGrid();
+}
+
+(function initSylWordGrid() { sylwordBuildGrid(); })();
+
+function sylwordUpdateStartBtn() {
+  var btn = document.getElementById('sylword-start-btn');
+  if (!btn) return;
+  var hasWords = sylwordGetPool().length > 0;
+  btn.disabled = sylwordSelectedCons.length === 0 || !hasWords;
+  btn.style.opacity = btn.disabled ? '.5' : '1';
+}
+
+function sylwordSetLen(n) {
+  sylwordLen = n;
+  document.getElementById('sylword-btn-2').classList.toggle('sylword-opt-active', n === 2);
+  document.getElementById('sylword-btn-3').classList.toggle('sylword-opt-active', n === 3);
+  sylwordUpdateStartBtn();
+}
+
+function sylwordSetDiff(d) {
+  sylwordDiff = d;
+  document.getElementById('sylword-btn-easy').classList.toggle('sylword-opt-active', d === 'easy');
+  document.getElementById('sylword-btn-hard').classList.toggle('sylword-opt-active', d === 'hard');
+}
+
+function sylwordGetPool() {
+  if (sylwordSelectedCons.length === 0) return [];
+  if (sylwordLevel === 'advanced') {
+    // Avanzado: palabras trabadas cuyo grupo (c[0]) esté seleccionado
+    return SYLWORD_BANK_ADV.filter(function(w) {
+      if (w.s.length !== sylwordLen) return false;
+      return sylwordSelectedCons.indexOf(w.c[0]) >= 0;
+    });
+  }
+  // Básico: todas las consonantes deben estar seleccionadas
+  return SYLWORD_BANK.filter(function(w) {
+    if (w.s.length !== sylwordLen) return false;
+    return w.c.every(function(c){ return sylwordSelectedCons.indexOf(c) >= 0; });
+  });
+}
+
+function sylwordPickWord() {
+  var pool = sylwordGetPool();
+  // Excluir usadas recientemente
+  var fresh = pool.filter(function(w){ return sylwordUsed.indexOf(w) < 0; });
+  if (fresh.length === 0) { sylwordUsed = []; fresh = pool; }
+  return fresh[Math.floor(Math.random() * fresh.length)] || null;
+}
+
+function startSylWord() {
+  var pool = sylwordGetPool();
+  if (pool.length === 0) return;
+  sylwordScore = 0;
+  sylwordUsed = [];
+  document.getElementById('sylword-score').textContent = '⭐ 0';
+  var label = sylwordLen + ' sílabas · ' + (sylwordDiff === 'easy' ? 'Fácil' : 'Difícil');
+  document.getElementById('sylword-title').textContent = '🧩 ' + label;
+  showScreen('sylword-game');
+  sylwordLoadWord(sylwordPickWord());
+}
+
+function stopSylWord() {
+  sylwordCurrentWord = null;
+  sylwordCollected = [];
+}
+
+function sylwordLoadWord(word) {
+  if (!word) { showScreen('sylword-welcome'); return; }
+  sylwordCurrentWord = word;
+  sylwordUsed.push(word);
+  sylwordCollected = [];
+
+  // Mostrar emoji
+  document.getElementById('sylword-emoji').textContent = word.e;
+
+  // Mostrar target: fácil = sílabas con guiones, difícil = solo casillas vacías
+  var targetEl = document.getElementById('sylword-target');
+  if (sylwordDiff === 'easy') {
+    targetEl.textContent = word.s.join(' - ');
+  } else {
+    targetEl.textContent = word.s.map(function(){ return '_ _ _'; }).join('   ');
+  }
+
+  // Ocultar feedback y botón siguiente
+  document.getElementById('sylword-feedback').textContent = '';
+  document.getElementById('sylword-next-btn').hidden = true;
+
+  // Render sílabas recogidas (vacío)
+  sylwordRenderCollected();
+
+  // Mezclar sílabas
+  sylwordShuffle = shuffleArr(word.s.slice());
+
+  // Render opciones
+  sylwordRenderOptions();
+
+  // Decir cada sílaba de la palabra al aparecer
+  setTimeout(function(){
+    var delay = 0;
+    word.s.forEach(function(syl){
+      setTimeout(function(){ speakLoud(syl); }, delay);
+      delay += 700;
+    });
+  }, 300);
+}
+
+function sylwordRenderCollected() {
+  var el = document.getElementById('sylword-collected');
+  el.innerHTML = '';
+  var word = sylwordCurrentWord;
+  if (!word) return;
+  for (var i = 0; i < word.s.length; i++) {
+    var chip = document.createElement('div');
+    chip.className = 'sylword-collected-chip';
+    chip.textContent = sylwordCollected[i] || '';
+    el.appendChild(chip);
+  }
+}
+
+function sylwordRenderOptions() {
+  var el = document.getElementById('sylword-options');
+  el.innerHTML = '';
+  sylwordShuffle.forEach(function(syl, idx) {
+    var btn = document.createElement('button');
+    btn.className = 'sylword-syl-btn';
+    btn.textContent = syl;
+    btn.dataset.idx = idx;
+    // Color según consonante principal
+    var mainCon = CONSONANTS.find(function(c){ return syl.startsWith(c.c); });
+    if (mainCon) btn.style.borderColor = mainCon.color;
+    btn.addEventListener('click', function() {
+      if (btn.classList.contains('used')) return;
+      sylwordOnPick(syl, btn);
+    });
+    el.appendChild(btn);
+  });
+}
+
+function sylwordOnPick(syl, btn) {
+  var word = sylwordCurrentWord;
+  if (!word) return;
+  var pos = sylwordCollected.length;
+  var correct = word.s[pos];
+
+  if (syl === correct) {
+    // Correcto
+    btn.classList.add('used');
+    sylwordCollected.push(syl);
+    sylwordRenderCollected();
+    speakLoud(syl);
+
+    if (sylwordCollected.length === word.s.length) {
+      // ¡Palabra completa!
+      setTimeout(function(){
+        sylwordScore++;
+        document.getElementById('sylword-score').textContent = '⭐ ' + sylwordScore;
+        // Marcar todas las chips como correctas
+        var chips = document.getElementById('sylword-collected').querySelectorAll('.sylword-collected-chip');
+        chips.forEach(function(c){ c.classList.add('correct'); });
+        document.getElementById('sylword-feedback').textContent = '¡Muy bien! 🎉';
+        document.getElementById('sylword-feedback').style.color = '#81c784';
+        document.getElementById('sylword-next-btn').hidden = false;
+        burst(8);
+      }, 300);
+    }
+  } else {
+    // Error — shake y quitar la sílaba si la puso mal
+    btn.style.background = 'rgba(244,67,54,.4)';
+    btn.style.borderColor = '#e57373';
+    // Pequeña animación shake al botón
+    btn.style.transform = 'translateX(-6px)';
+    setTimeout(function(){
+      btn.style.transform = 'translateX(6px)';
+      setTimeout(function(){
+        btn.style.transform = '';
+        btn.style.background = '';
+        btn.style.borderColor = '';
+      }, 120);
+    }, 120);
+    // Marcar chip de posición actual como error momentáneo
+    var chips = document.getElementById('sylword-collected').querySelectorAll('.sylword-collected-chip');
+    if (chips[pos]) {
+      chips[pos].textContent = syl;
+      chips[pos].classList.add('wrong');
+      setTimeout(function(){
+        chips[pos].textContent = '';
+        chips[pos].classList.remove('wrong');
+      }, 500);
+    }
+  }
+}
+
+function toggleFullscreen() {
+  var btn = document.getElementById('fullscreen-btn');
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().then(function(){
+      btn.textContent = '✕';
+      btn.title = 'Salir de pantalla completa';
+    }).catch(function(){});
+  } else {
+    document.exitFullscreen().then(function(){
+      btn.textContent = '⛶';
+      btn.title = 'Pantalla completa';
+    }).catch(function(){});
+  }
+}
+document.addEventListener('fullscreenchange', function(){
+  var btn = document.getElementById('fullscreen-btn');
+  if (btn) {
+    btn.textContent = document.fullscreenElement ? '✕' : '⛶';
+    btn.title = document.fullscreenElement ? 'Salir de pantalla completa' : 'Pantalla completa';
+  }
+});
+
+function sylwordNextWord() {
+  sylwordLoadWord(sylwordPickWord());
+}
+
+// Actualizar showScreen para inicializar sylword-welcome y memory-welcome
+var _origShowScreen = showScreen;
+showScreen = function(id) {
+  _origShowScreen(id);
+  if (id === 'sylword-welcome') sylwordUpdateStartBtn();
+  if (id === 'memory-welcome') memInitWelcome();
+};
+
+// ── MEMORIA DE SÍLABAS ────────────────────────────────────────────────
+var memMode = 'silabas';   // 'silabas' | 'palabras'
+var memPairs = 5;
+var memSelectedCons = []; // consonantes seleccionadas para modo sílabas
+var memCards = [];         // [{id, type, value, emoji, el, matched, flipped}]
+var memFlipped = [];       // máx 2 cartas volteadas
+var memLocked = false;
+var memMatches = 0;
+
+// Sílabas disponibles por consonante (vocales A E I O U)
+var MEM_VOWELS = ['A','E','I','O','U'];
+
+// Génera sílabas para una consonante dada
+function memSylsForCon(con) {
+  // Casos especiales
+  if (con === 'Ñ') return ['ÑA','ÑE','ÑI','ÑO','ÑU'];
+  if (con === 'LL') return ['LLA','LLE','LLI','LLO','LLU'];
+  if (con === 'CH') return ['CHA','CHE','CHI','CHO','CHU'];
+  if (con === 'RR') return ['RRA','RRE','RRI','RRO','RRU'].filter(function(s){ return AUDIO_MAP[s]; });
+  return MEM_VOWELS.map(function(v){ return con + v; }).filter(function(s){ return AUDIO_MAP[s]; });
+}
+
+var memLevel = 'basic';
+
+function memSetLevel(lvl) {
+  memLevel = lvl;
+  document.getElementById('mem-btn-basic').classList.toggle('sylword-opt-active', lvl === 'basic');
+  document.getElementById('mem-btn-advanced').classList.toggle('sylword-opt-active', lvl === 'advanced');
+  memInitWelcome();
+}
+
+function memInitWelcome() {
+  var grid = document.getElementById('mem-con-grid');
+  grid.innerHTML = '';
+  memSelectedCons = [];
+  var list = memLevel === 'advanced' ? CLUSTERS : [
+    {c:'B',color:'#e53935'},{c:'C',color:'#8e24aa'},{c:'D',color:'#1e88e5'},{c:'F',color:'#00897b'},
+    {c:'G',color:'#f4511e'},{c:'J',color:'#e53935'},{c:'K',color:'#8e24aa'},{c:'L',color:'#1e88e5'},
+    {c:'LL',color:'#00897b'},{c:'M',color:'#f4511e'},{c:'N',color:'#e53935'},{c:'Ñ',color:'#8e24aa'},
+    {c:'P',color:'#1e88e5'},{c:'R',color:'#00897b'},{c:'S',color:'#f4511e'},{c:'T',color:'#e53935'},
+    {c:'V',color:'#8e24aa'},{c:'W',color:'#1e88e5'},{c:'X',color:'#00897b'},{c:'Y',color:'#f4511e'},
+    {c:'Z',color:'#e53935'},{c:'CH',color:'#8e24aa'}
+  ];
+  list.forEach(function(con) {
+    var btn = document.createElement('button');
+    btn.className = 'con-btn';
+    btn.innerHTML = '<span class="con-letter" style="color:' + (con.color || '#333') + '">' + con.c + '</span>';
+    btn.onclick = function() {
+      var idx = memSelectedCons.indexOf(con.c);
+      if (idx >= 0) {
+        memSelectedCons.splice(idx, 1);
+        btn.classList.remove('con-selected');
+      } else {
+        memSelectedCons.push(con.c);
+        btn.classList.add('con-selected');
+      }
+      memUpdateStartBtn();
+    };
+    grid.appendChild(btn);
+  });
+  memUpdateStartBtn();
+  memUpdateConSection();
+}
+
+function memSetMode(m) {
+  memMode = m;
+  document.getElementById('mem-btn-sil').classList.toggle('sylword-opt-active', m === 'silabas');
+  document.getElementById('mem-btn-word').classList.toggle('sylword-opt-active', m === 'palabras');
+  memUpdateConSection();
+  memUpdateStartBtn();
+}
+
+function memSetPairs(n) {
+  memPairs = n;
+  document.querySelectorAll('#mem-pairs-btns button').forEach(function(b){
+    b.classList.toggle('sylword-opt-active', parseInt(b.dataset.pairs) === n);
+  });
+  memUpdateStartBtn();
+}
+
+function memUpdateConSection() {
+  var sec = document.getElementById('mem-con-section');
+  sec.style.display = memMode === 'silabas' ? '' : 'none';
+}
+
+function memUpdateStartBtn() {
+  var btn = document.getElementById('mem-start-btn');
+  var ok;
+  if (memMode === 'palabras') {
+    ok = memPairs <= SYLWORD_BANK.filter(function(w){ return w.s.length === 2; }).length;
+  } else {
+    if (memSelectedCons.length === 0) { ok = false; }
+    else {
+      var allSyls = [];
+      memSelectedCons.forEach(function(c){ memSylsForCon(c).forEach(function(s){ allSyls.push(s); }); });
+      ok = allSyls.length >= memPairs;
+    }
+  }
+  btn.disabled = !ok;
+  btn.style.opacity = ok ? '1' : '.5';
+}
+
+function startMemory() {
+  memMatches = 0;
+  memFlipped = [];
+  memLocked = false;
+  document.getElementById('mem-score').textContent = '⭐ 0';
+  document.getElementById('mem-feedback').textContent = '';
+
+  var pairs = [];
+
+  if (memMode === 'silabas') {
+    // Parejas: misma sílaba × 2, de todas las consonantes seleccionadas
+    var allSyls = [];
+    memSelectedCons.forEach(function(c){ memSylsForCon(c).forEach(function(s){ allSyls.push(s); }); });
+    var syls = shuffleArr(allSyls).slice(0, memPairs);
+    document.getElementById('mem-title').textContent = '🔤 Memoria · ' + memSelectedCons.join(', ');
+    syls.forEach(function(syl, i) {
+      pairs.push({id: 'a'+i, pairId: i, type: 'sil', value: syl});
+      pairs.push({id: 'b'+i, pairId: i, type: 'sil', value: syl});
+    });
+  } else {
+    // Parejas: texto (MA-NO) + emoji
+    var pool = shuffleArr(SYLWORD_BANK.filter(function(w){ return w.s.length === 2; })).slice(0, memPairs);
+    document.getElementById('mem-title').textContent = '🖼️ Memoria · Palabras';
+    pool.forEach(function(word, i) {
+      pairs.push({id: 'w'+i, pairId: i, type: 'word', value: word.s.join('-'), emoji: null});
+      pairs.push({id: 'e'+i, pairId: i, type: 'emoji', value: word.e, emoji: word.e});
+    });
+  }
+
+  pairs = shuffleArr(pairs);
+
+  // Calcular columnas del grid
+  var total = pairs.length;
+  var cols = total <= 10 ? (total <= 6 ? 3 : (total <= 8 ? 4 : 5)) : (total <= 12 ? 4 : 5);
+  var board = document.getElementById('mem-board');
+  board.innerHTML = '';
+  board.style.gridTemplateColumns = 'repeat(' + cols + ', auto)';
+
+
+  memCards = pairs.map(function(p) {
+    var card = document.createElement('div');
+    card.className = 'mem-card';
+    card.innerHTML = '<div class="mem-card-inner"><div class="mem-card-back"><span class="mem-card-back-star">⭐</span></div><div class="mem-card-front"></div></div>';
+    var front = card.querySelector('.mem-card-front');
+    if (p.type === 'sil') {
+      front.textContent = p.value;
+      front.style.fontSize = '1.6rem';
+    } else if (p.type === 'word') {
+      front.textContent = p.value;
+      front.style.fontSize = '1.1rem';
+    } else {
+      front.textContent = p.value;
+      front.style.fontSize = '2.4rem';
+    }
+    var obj = {id: p.id, pairId: p.pairId, type: p.type, value: p.value, el: card, matched: false, flipped: false};
+    card.onclick = function(){ memFlipCard(obj); };
+    board.appendChild(card);
+    return obj;
+  });
+
+  showScreen('memory-game');
+}
+
+function memFlipCard(card) {
+  if (memLocked || card.flipped || card.matched) return;
+  card.flipped = true;
+  card.el.classList.add('mem-flipped');
+  // Sonido: sílaba o pronunciar texto
+  if (card.type === 'sil') speakLoud(card.value);
+  else if (card.type === 'word') {
+    var parts = card.value.split('-');
+    var d = 0;
+    parts.forEach(function(s){ setTimeout(function(){ speakLoud(s); }, d); d += 700; });
+  }
+  memFlipped.push(card);
+  if (memFlipped.length === 2) {
+    memLocked = true;
+    setTimeout(memCheckPair, 900);
+  }
+}
+
+function memCheckPair() {
+  var a = memFlipped[0], b = memFlipped[1];
+  if (a.pairId === b.pairId) {
+    // ¡Pareja!
+    a.matched = b.matched = true;
+    a.el.classList.add('mem-matched');
+    b.el.classList.add('mem-matched');
+    memMatches++;
+    document.getElementById('mem-score').textContent = '⭐ ' + memMatches;
+    document.getElementById('mem-feedback').textContent = '¡Muy bien! 🎉';
+    document.getElementById('mem-feedback').style.color = '#81c784';
+    setTimeout(function(){ document.getElementById('mem-feedback').textContent = ''; }, 900);
+    if (memMatches === memPairs) {
+      setTimeout(function(){
+        document.getElementById('mem-feedback').textContent = '¡Has encontrado todas las parejas! 🏆';
+        burst(12);
+      }, 400);
+    }
+  } else {
+    // Error: voltear de nuevo
+    a.flipped = b.flipped = false;
+    a.el.classList.remove('mem-flipped');
+    b.el.classList.remove('mem-flipped');
+    document.getElementById('mem-feedback').textContent = '¡Sigue buscando! 🔍';
+    document.getElementById('mem-feedback').style.color = 'rgba(255,255,255,.7)';
+    setTimeout(function(){ document.getElementById('mem-feedback').textContent = ''; }, 700);
+  }
+  memFlipped = [];
+  memLocked = false;
+}
+
+function stopMemory() {
+  memCards = [];
+  memFlipped = [];
+  memLocked = false;
+}
+
+// Estilos de las cartas de memoria
+(function injectMemStyles() {
+  var s = document.createElement('style');
+  s.textContent = [
+    '.mem-card{width:90px;height:90px;perspective:700px;cursor:pointer;flex-shrink:0;}',
+    '.mem-card-inner{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform .45s cubic-bezier(.4,0,.2,1);}',
+    '.mem-card.mem-flipped .mem-card-inner{transform:rotateY(180deg);}',
+    '.mem-card.mem-matched .mem-card-inner{transform:rotateY(180deg);}',
+    '.mem-card-back,.mem-card-front{position:absolute;inset:0;border-radius:18px;display:flex;align-items:center;justify-content:center;backface-visibility:hidden;font-family:"Fredoka One",cursive;font-weight:700;}',
+    '.mem-card-back{background:linear-gradient(135deg,#ff6b6b,#ff8e53);border:3px solid rgba(255,255,255,.5);box-shadow:0 6px 0 rgba(0,0,0,.25),0 8px 16px rgba(0,0,0,.2);font-size:2.2rem;}',
+    '.mem-card-back:hover{filter:brightness(1.1);}',
+    '.mem-card-back-star{font-size:2.2rem;filter:drop-shadow(0 2px 3px rgba(0,0,0,.3));}',
+    '.mem-card-front{background:linear-gradient(135deg,#fff9e6,#fff3c4);color:#333;border:3px solid #ffd54f;box-shadow:0 6px 0 rgba(0,0,0,.2),0 8px 16px rgba(0,0,0,.15);transform:rotateY(180deg);text-align:center;padding:6px;font-size:1.5rem;}',
+    '.mem-card.mem-matched .mem-card-front{background:linear-gradient(135deg,#a5d6a7,#66bb6a);color:#fff;border-color:#43a047;box-shadow:0 6px 0 rgba(0,0,0,.2),0 0 0 3px #fff,0 0 0 6px #66bb6a;}'
+  ].join('\n');
+  document.head.appendChild(s);
+})();
+
+// ══════════════════════════════════════════════════════════
+// LEE Y UNE
+// ══════════════════════════════════════════════════════════
+var luLevel          = 'basic';
+var luLen            = 2;
+var luSelectedCons   = [];
+var luScore          = 0;
+var luCurrentWord    = null;   // { s:[], e:'', c:[] }
+var luDistractors    = [];     // [{e, word}]  — los otros dos emojis
+var luCorrectLane    = 0;      // 0,1,2 — en qué carril está el emoji correcto
+var luDragging       = false;
+var luCarX           = 0;
+var luCarY           = 0;
+var luDragStartX     = 0;
+var luDragStartY     = 0;
+var luCarStartX      = 0;
+var luCarStartY      = 0;
+var luAnimFrame      = null;
+var luUsed           = [];
+var luPool           = [];
+var luHitProcessed   = false;
+
+function luInitWelcome() {
+  luBuildGrid();
+  luUpdateStartBtn();
+}
+
+function luSetLevel(lvl) {
+  luLevel = lvl;
+  document.getElementById('lu-btn-basic').classList.toggle('sylword-opt-active', lvl === 'basic');
+  document.getElementById('lu-btn-advanced').classList.toggle('sylword-opt-active', lvl === 'advanced');
+  document.getElementById('lu-grid-title').textContent =
+    lvl === 'basic' ? 'Elige las consonantes con las que jugar' : 'Elige los grupos consonánticos';
+  luBuildGrid();
+}
+
+function luSetLen(n) {
+  luLen = n;
+  document.getElementById('lu-btn-2').classList.toggle('sylword-opt-active', n === 2);
+  document.getElementById('lu-btn-3').classList.toggle('sylword-opt-active', n === 3);
+  document.getElementById('lu-btn-0').classList.toggle('sylword-opt-active', n === 0);
+  luUpdateStartBtn();
+}
+
+function luBuildGrid() {
+  var grid = document.getElementById('lu-con-grid');
+  if (!grid) return;
+  grid.innerHTML = '';
+  luSelectedCons = [];
+  luUpdateStartBtn();
+  var list = luLevel === 'advanced' ? CLUSTERS : CONSONANTS;
+  list.forEach(function(con) {
+    var btn = document.createElement('button');
+    btn.className = 'con-btn';
+    btn.innerHTML = '<span class="con-letter" style="color:'+con.color+'">'+con.c+'</span>';
+    btn.addEventListener('click', function() {
+      var idx = luSelectedCons.indexOf(con.c);
+      if (idx >= 0) { luSelectedCons.splice(idx, 1); btn.classList.remove('con-selected'); }
+      else { luSelectedCons.push(con.c); btn.classList.add('con-selected'); }
+      luUpdateStartBtn();
+    });
+    grid.appendChild(btn);
+  });
+}
+
+function luUpdateStartBtn() {
+  var pool = luGetPool();
+  var btn  = document.getElementById('lu-start-btn');
+  if (!btn) return;
+  var ok = pool.length >= 3;
+  btn.disabled = !ok;
+  btn.style.opacity = ok ? '1' : '.5';
+}
+
+function luGetPool() {
+  if (luSelectedCons.length === 0) return [];
+  var bank = luLevel === 'advanced' ? SYLWORD_BANK_ADV : SYLWORD_BANK;
+  return bank.filter(function(w) {
+    // luLen===0 significa "más de 3 sílabas" — aquí incluye todo lo que tenga 3+
+    // pero el banco actual solo tiene 2 y 3; se deja para future expansion
+    if (luLen === 0) { if (w.s.length < 4) return false; }
+    else { if (w.s.length !== luLen) return false; }
+    if (luLevel === 'advanced') {
+      return luSelectedCons.indexOf(w.c[0]) >= 0;
+    }
+    return w.c.some(function(c){ return luSelectedCons.indexOf(c) >= 0; });
+  });
+}
+
+function luPickDistractors(correct) {
+  // Elegir 2 emojis distintos del mismo banco (longitud cualquiera para más variedad)
+  var bank = luLevel === 'advanced' ? SYLWORD_BANK_ADV : SYLWORD_BANK;
+  var others = bank.filter(function(w){ return w.e !== correct.e; });
+  // shuffle
+  for (var i = others.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var tmp = others[i]; others[i] = others[j]; others[j] = tmp;
+  }
+  // tomar los 2 primeros únicos por emoji
+  var seen = {};
+  var result = [];
+  for (var k = 0; k < others.length && result.length < 2; k++) {
+    if (!seen[others[k].e]) { seen[others[k].e] = true; result.push(others[k]); }
+  }
+  return result;
+}
+
+function startLeeUne() {
+  luPool   = luGetPool();
+  luUsed   = [];
+  luScore  = 0;
+  document.getElementById('lu-score').textContent = '⭐ 0';
+  showScreen('leeune-game');
+  luNextWord();
+}
+
+function stopLeeUne() {
+  if (luAnimFrame) cancelAnimationFrame(luAnimFrame);
+  luAnimFrame = null;
+}
+
+function luNextWord() {
+  luHitProcessed = false;
+  var feedback = document.getElementById('lu-feedback');
+  feedback.textContent = '';
+
+  // Refill pool si se acabó
+  var remaining = luPool.filter(function(w){
+    return luUsed.indexOf(w.e + w.s.join('')) < 0;
+  });
+  if (remaining.length === 0) { luUsed = []; remaining = luPool.slice(); }
+
+  // Elegir palabra
+  luCurrentWord = remaining[Math.floor(Math.random() * remaining.length)];
+  luUsed.push(luCurrentWord.e + luCurrentWord.s.join(''));
+
+  // Elegir distractores
+  luDistractors = luPickDistractors(luCurrentWord);
+
+  // Construir carretera
+  luBuildRoad();
+}
+
+function luBuildRoad() {
+  var wrap  = document.getElementById('lu-road-wrap');
+  var lines = document.getElementById('lu-lane-lines');
+  var emojisDiv = document.getElementById('lu-lane-emojis');
+  var carDiv    = document.getElementById('lu-car');
+
+  var W = wrap.offsetWidth;
+  var H = wrap.offsetHeight;
+  var lanes = 3;
+  var laneH = H / lanes;
+
+  // Líneas divisorias
+  lines.innerHTML = '';
+  for (var i = 1; i < lanes; i++) {
+    var ln = document.createElement('div');
+    ln.style.cssText = 'position:absolute;left:0;right:0;top:'+Math.round(i*laneH)+'px;height:3px;background:rgba(255,255,255,.25);';
+    lines.appendChild(ln);
+  }
+  // Línea de carretera asfalto
+  wrap.style.background = '#4a4a5a';
+
+  // Colocar emojis correctos y distractores (barajar posición)
+  luCorrectLane = Math.floor(Math.random() * 3);
+  var positions = [0, 1, 2];
+  var wrong0Lane = positions.filter(function(p){ return p !== luCorrectLane; })[0];
+  var wrong1Lane = positions.filter(function(p){ return p !== luCorrectLane; })[1];
+
+  emojisDiv.innerHTML = '';
+  var emojiData = [
+    { lane: luCorrectLane,  e: luCurrentWord.e,    correct: true  },
+    { lane: wrong0Lane,     e: luDistractors[0] ? luDistractors[0].e : '❓', correct: false },
+    { lane: wrong1Lane,     e: luDistractors[1] ? luDistractors[1].e : '❓', correct: false },
+  ];
+
+  var emojiSize = Math.min(laneH * 0.7, 70);
+  var emojiX    = W - emojiSize - 16;
+
+  emojiData.forEach(function(d) {
+    var el = document.createElement('div');
+    var y  = d.lane * laneH + (laneH - emojiSize) / 2;
+    el.style.cssText = 'position:absolute;font-size:'+emojiSize+'px;line-height:1;'
+      +'top:'+y+'px;left:'+emojiX+'px;width:'+emojiSize+'px;text-align:center;'
+      +'pointer-events:none;transition:transform .15s;';
+    el.dataset.correct = d.correct ? '1' : '0';
+    el.dataset.lane    = d.lane;
+    el.textContent     = d.e;
+    emojisDiv.appendChild(el);
+  });
+
+  // Construir coche con palabra
+  var carH   = Math.min(laneH * 0.75, 90);
+  var carW   = carH * 1.7;
+  var wordFontSize = Math.max(12, Math.min(carH * 0.32, 22));
+  var word   = luCurrentWord.s.join('·');
+
+  carDiv.innerHTML =
+    '<div style="display:flex;flex-direction:column;align-items:center;gap:2px;">'
+    + '<div style="background:rgba(255,255,255,.95);border-radius:8px;padding:3px 8px;'
+    +   'font-family:\'Fredoka One\',cursive;font-size:'+wordFontSize+'px;color:#1a1a2e;'
+    +   'white-space:nowrap;box-shadow:0 2px 8px rgba(0,0,0,.3);letter-spacing:2px;min-width:60px;text-align:center;">'
+    +   luCurrentWord.s.join('·')
+    + '</div>'
+    + carSVG('#5b9bd5', carW, carH)
+    + '</div>';
+
+  // Posición inicial: centro vertical, lado izquierdo
+  luCarX = 16;
+  luCarY = (H - carH) / 2;
+  carDiv.style.left   = luCarX + 'px';
+  carDiv.style.top    = luCarY + 'px';
+  carDiv.style.width  = carW + 'px';
+  carDiv.style.cursor = 'grab';
+
+  // Arrastre
+  luSetupDrag(carDiv, wrap, W, H, laneH, emojiX, emojiSize, emojisDiv, carW, carH);
+}
+
+function luSetupDrag(carDiv, wrap, W, H, laneH, emojiX, emojiSize, emojisDiv, carW, carH) {
+  var isDragging = false;
+  var startPointerX, startPointerY, startCarX, startCarY;
+
+  function onStart(e) {
+    e.preventDefault();
+    isDragging = true;
+    carDiv.style.cursor = 'grabbing';
+    var pt = e.touches ? e.touches[0] : e;
+    startPointerX = pt.clientX;
+    startPointerY = pt.clientY;
+    var rect = wrap.getBoundingClientRect();
+    startCarX = luCarX;
+    startCarY = luCarY;
+  }
+
+  function onMove(e) {
+    if (!isDragging) return;
+    e.preventDefault();
+    var pt = e.touches ? e.touches[0] : e;
+    var dx = pt.clientX - startPointerX;
+    var dy = pt.clientY - startPointerY;
+    luCarX = Math.max(0, Math.min(W - carW, startCarX + dx));
+    luCarY = Math.max(0, Math.min(H - carH, startCarY + dy));
+    carDiv.style.left = luCarX + 'px';
+    carDiv.style.top  = luCarY + 'px';
+    luCheckCollision(carDiv, W, H, laneH, emojiX, emojiSize, emojisDiv, carW, carH);
+  }
+
+  function onEnd(e) {
+    if (!isDragging) return;
+    isDragging = false;
+    carDiv.style.cursor = 'grab';
+  }
+
+  carDiv.addEventListener('mousedown',  onStart);
+  carDiv.addEventListener('touchstart', onStart, {passive:false});
+  document.addEventListener('mousemove',  onMove);
+  document.addEventListener('touchmove',  onMove, {passive:false});
+  document.addEventListener('mouseup',    onEnd);
+  document.addEventListener('touchend',   onEnd);
+
+  // Guardar limpieza para cuando cambie la ronda
+  carDiv._luCleanup = function() {
+    carDiv.removeEventListener('mousedown',  onStart);
+    carDiv.removeEventListener('touchstart', onStart);
+    document.removeEventListener('mousemove',  onMove);
+    document.removeEventListener('touchmove',  onMove);
+    document.removeEventListener('mouseup',    onEnd);
+    document.removeEventListener('touchend',   onEnd);
+  };
+}
+
+function luCheckCollision(carDiv, W, H, laneH, emojiX, emojiSize, emojisDiv, carW, carH) {
+  if (luHitProcessed) return;
+  var carMidX = luCarX + carW / 2;
+  var carMidY = luCarY + carH / 2;
+
+  // ¿El coche llega a la zona de emojis?
+  if (carMidX < emojiX - 20) return;
+
+  // ¿En qué carril está el centro del coche?
+  var hitLane = Math.floor(carMidY / laneH);
+  hitLane = Math.max(0, Math.min(2, hitLane));
+
+  luHitProcessed = true;
+  if (hitLane === luCorrectLane) {
+    luOnCorrect(carDiv, emojisDiv);
+  } else {
+    luOnWrong(carDiv, emojisDiv, hitLane);
+  }
+}
+
+function luOnCorrect(carDiv, emojisDiv) {
+  if (carDiv._luCleanup) { carDiv._luCleanup(); carDiv._luCleanup = null; }
+  carDiv.style.cursor = 'default';
+  luScore++;
+  document.getElementById('lu-score').textContent = '⭐ ' + luScore;
+  // Animación +1
+  var pill = document.getElementById('lu-score');
+  var rect = pill.getBoundingClientRect();
+  var pop = document.createElement('div');
+  pop.className = 'lu-point-pop';
+  pop.textContent = '+1';
+  pop.style.left = (rect.left + rect.width / 2 - 20) + 'px';
+  pop.style.top  = (rect.top - 10) + 'px';
+  document.body.appendChild(pop);
+  setTimeout(function(){ pop.remove(); }, 1000);
+
+  // Resaltar emoji correcto
+  var emojis = emojisDiv.querySelectorAll('div');
+  emojis.forEach(function(el) {
+    if (el.dataset.correct === '1') {
+      el.style.transform = 'scale(1.4)';
+      el.style.filter    = 'drop-shadow(0 0 12px #ffd600)';
+    }
+  });
+
+  var feedback = document.getElementById('lu-feedback');
+  feedback.textContent = '¡Muy bien! 🎉';
+  feedback.style.color = '#a5d6a7';
+
+  speakWordLoud(luCurrentWord.s.join(''));
+  setTimeout(function() {
+    if (carDiv._luCleanup) carDiv._luCleanup();
+    luNextWord();
+  }, 1600);
+}
+
+function luOnWrong(carDiv, emojisDiv, hitLane) {
+  if (carDiv._luCleanup) { carDiv._luCleanup(); carDiv._luCleanup = null; }
+  carDiv.style.cursor = 'default';
+
+  // Resaltar incorrecto y correcto
+  var emojis = emojisDiv.querySelectorAll('div');
+  emojis.forEach(function(el) {
+    if (parseInt(el.dataset.lane) === hitLane) {
+      el.style.filter = 'drop-shadow(0 0 8px #e53935)';
+    }
+    if (el.dataset.correct === '1') {
+      el.style.transform = 'scale(1.3)';
+      el.style.filter    = 'drop-shadow(0 0 12px #ffd600)';
+    }
+  });
+
+  var feedback = document.getElementById('lu-feedback');
+  feedback.textContent = '¡Inténtalo de nuevo! 😊';
+  feedback.style.color = '#ffcdd2';
+
+  setTimeout(function() {
+    feedback.textContent = '';
+    // Volver coche al inicio
+    var wrap = document.getElementById('lu-road-wrap');
+    var H    = wrap.offsetHeight;
+    var carH = parseFloat(document.getElementById('lu-car').style.height || '80');
+    luCarX = 16;
+    luCarY = (H - 80) / 2;
+    var c = document.getElementById('lu-car');
+    c.style.left = luCarX + 'px';
+    c.style.top  = luCarY + 'px';
+    // Restaurar emojis
+    emojis.forEach(function(el) {
+      el.style.transform = '';
+      el.style.filter    = '';
+    });
+    // Reconfigurar arrastre
+    var W = wrap.offsetWidth;
+    var laneH = H / 3;
+    var emojiSize = Math.min(laneH * 0.7, 70);
+    var emojiX    = W - emojiSize - 16;
+    var carW = parseFloat(c.style.width || '140');
+    luSetupDrag(c, wrap, W, H, laneH, emojiX, emojiSize, emojisDiv, carW, 80);
+  }, 1200);
+}
+
+(function initLeeUne() {})();
+
+/* ============================================================
+   DICTADO LOCO
+   ============================================================ */
+var dlLevel    = 'basic';    // 'basic' | 'advanced'
+var dlType     = 'simple';   // 'simple' | 'cluster'
+var dlSelected = [];         // consonants chosen on welcome
+var dlPool     = [];         // syllable objects {syl, key}
+var dlCurrent  = null;       // current syllable
+var dlScore    = 0;
+var dlTyped    = [];         // letters typed so far (advanced)
+var dlRunning  = false;
+
+/* ---- WELCOME ---- */
+function dlInitWelcome() {
+  dlLevel = 'basic';
+  dlType  = 'simple';
+  dlSelected = [];
+  dlRenderConsonantGrid();
+  dlUpdateStartBtn();
+  document.getElementById('dl-btn-basic').classList.add('sylword-opt-active');
+  document.getElementById('dl-btn-advanced').classList.remove('sylword-opt-active');
+  document.getElementById('dl-btn-simple').classList.add('sylword-opt-active');
+  document.getElementById('dl-btn-cluster').classList.remove('sylword-opt-active');
+}
+
+function dlSetLevel(l) {
+  dlLevel = l;
+  document.getElementById('dl-btn-basic').classList.toggle('sylword-opt-active', l === 'basic');
+  document.getElementById('dl-btn-advanced').classList.toggle('sylword-opt-active', l === 'advanced');
+}
+
+function dlSetType(t) {
+  dlType = t;
+  document.getElementById('dl-btn-simple').classList.toggle('sylword-opt-active', t === 'simple');
+  document.getElementById('dl-btn-cluster').classList.toggle('sylword-opt-active', t === 'cluster');
+  dlSelected = [];
+  dlRenderConsonantGrid();
+  dlUpdateStartBtn();
+}
+
+function dlRenderConsonantGrid() {
+  var grid = document.getElementById('dl-con-grid');
+  var title = document.getElementById('dl-grid-title');
+  if (!grid) return;
+  var source = dlType === 'cluster' ? CLUSTERS : CONSONANTS;
+  title.textContent = dlType === 'cluster' ? 'Elige las trabadas' : 'Elige las consonantes';
+  grid.innerHTML = '';
+  source.forEach(function(item) {
+    var c = item.c;
+    var btn = document.createElement('button');
+    btn.className = 'con-btn';
+    btn.style.background = item.color;
+    var lbl = document.createElement('div');
+    lbl.className = 'con-letter';
+    lbl.style.color = '#fff';
+    lbl.textContent = c;
+    btn.appendChild(lbl);
+    btn.onclick = function() {
+      var idx = dlSelected.indexOf(c);
+      if (idx >= 0) {
+        dlSelected.splice(idx, 1);
+        btn.classList.remove('con-selected');
+      } else {
+        dlSelected.push(c);
+        btn.classList.add('con-selected');
+      }
+      dlUpdateStartBtn();
+    };
+    grid.appendChild(btn);
+  });
+}
+
+function dlUpdateStartBtn() {
+  var btn = document.getElementById('dl-start-btn');
+  if (!btn) return;
+  var ok = dlSelected.length > 0;
+  btn.disabled = !ok;
+  btn.style.opacity = ok ? '1' : '0.5';
+  btn.style.cursor  = ok ? 'pointer' : 'not-allowed';
+}
+
+/* ---- BUILD POOL ---- */
+function dlBuildPool() {
+  /* Each entry: {syl:'MA', key:'MA'} */
+  var pool = [];
+  var source = dlType === 'cluster' ? CLUSTERS : CONSONANTS;
+  /* For each selected consonant, collect syllables from AUDIO_MAP */
+  var allKeys = Object.keys(AUDIO_MAP);
+  dlSelected.forEach(function(con) {
+    var conUp = con.toUpperCase();
+    /* Ñ syllables are stored in AUDIO_MAP with NY prefix (NYA, NYE…) */
+    var searchPrefix = (conUp === 'Ñ') ? 'NY' : conUp;
+    allKeys.forEach(function(k) {
+      if (k.startsWith('LETRA_') || k === 'SILENCIO') return;
+      if (!k.startsWith(searchPrefix)) return;
+      /* When consonant is N, exclude NY keys so Ñ syllables don't leak in */
+      if (conUp === 'N' && k.startsWith('NY')) return;
+      if (dlType === 'simple' && k.length > 3) return;
+      if (dlType === 'cluster' && k.length < 3) return;
+      if (/[_\d]/.test(k)) return;
+      /* Display form shows Ñ, audio key keeps NY for AUDIO_MAP lookup */
+      var displaySyl = (conUp === 'Ñ') ? k.replace(/^NY/, 'Ñ') : k;
+      pool.push({syl: displaySyl, key: k});
+    });
+  });
+  return pool;
+}
+
+/* ---- START / STOP ---- */
+function startDictado() {
+  dlPool = dlBuildPool();
+  if (dlPool.length === 0) { alert('No hay sílabas para esas consonantes. Prueba con otras.'); return; }
+  dlScore   = 0;
+  dlRunning = true;
+  dlTyped   = [];
+  document.getElementById('dl-score').textContent = '⭐ 0';
+  showScreen('dictado-game');
+  dlNextSyllable();
+}
+
+function stopDictado() {
+  dlRunning = false;
+  if (window.speechSynthesis) speechSynthesis.cancel();
+}
+
+/* ---- GAME LOOP ---- */
+function dlNextSyllable() {
+  if (!dlRunning) return;
+  dlTyped = [];
+  dlCurrent = dlPool[Math.floor(Math.random() * dlPool.length)];
+  document.getElementById('dl-feedback').textContent = '';
+  dlRenderAnswerDisplay();
+  if (dlLevel === 'basic') {
+    dlRenderBasicOptions();
+  } else {
+    dlRenderKeyboard();
+  }
+  setTimeout(function() { dlPlayCurrent(); }, 300);
+}
+
+function dlPlayCurrent() {
+  if (!dlCurrent) return;
+  speakLoud(dlCurrent.key);
+}
+
+/* ---- ANSWER DISPLAY (advanced) ---- */
+function dlRenderAnswerDisplay() {
+  var wrap = document.getElementById('dl-answer-display');
+  if (!wrap) return;
+  if (dlLevel === 'basic') {
+    /* Show question mark placeholder */
+    wrap.innerHTML = '<div style="font-family:\'Fredoka One\',cursive;font-size:2.4rem;color:rgba(255,255,255,.3);">?</div>';
+    return;
+  }
+  /* advanced: show exactly target.length boxes, filled or empty */
+  var target = dlCurrent ? dlCurrent.syl : '';
+  wrap.innerHTML = '';
+  for (var i = 0; i < target.length; i++) {
+    if (i < dlTyped.length) {
+      var box = document.createElement('div');
+      box.className = 'con-btn';
+      box.style.cssText = 'min-width:52px;background:rgba(255,255,255,.2);pointer-events:none;';
+      var lbl = document.createElement('div');
+      lbl.className = 'con-letter';
+      lbl.style.color = '#fff';
+      lbl.textContent = dlTyped[i];
+      box.appendChild(lbl);
+      wrap.appendChild(box);
+    } else {
+      var empty = document.createElement('div');
+      empty.style.cssText = 'width:52px;height:56px;border-radius:14px;border:2px dashed rgba(255,255,255,.3);';
+      wrap.appendChild(empty);
+    }
+  }
+}
+
+/* ---- BASIC MODE: 3 options ---- */
+function dlRenderBasicOptions() {
+  var wrap = document.getElementById('dl-options-wrap');
+  wrap.innerHTML = '';
+
+  /* pick 2 distractors */
+  var options = [dlCurrent.syl];
+  var candidates = dlPool.filter(function(p) { return p.syl !== dlCurrent.syl; });
+  /* shuffle candidates */
+  for (var i = candidates.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var tmp = candidates[i]; candidates[i] = candidates[j]; candidates[j] = tmp;
+  }
+  for (var k = 0; k < Math.min(2, candidates.length); k++) {
+    options.push(candidates[k].syl);
+  }
+  /* shuffle options */
+  for (var i = options.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var tmp = options[i]; options[i] = options[j]; options[j] = tmp;
+  }
+
+  var row = document.createElement('div');
+  row.style.cssText = 'display:flex;gap:14px;justify-content:center;flex-wrap:wrap;';
+  options.forEach(function(syl) {
+    var btn = document.createElement('button');
+    btn.className = 'con-btn';
+    btn.style.cssText = 'min-width:80px;padding:14px 20px;background:rgba(255,255,255,.18);';
+    var lbl = document.createElement('div');
+    lbl.className = 'con-letter';
+    lbl.style.fontSize = '2rem';
+    lbl.textContent = syl;
+    btn.appendChild(lbl);
+    btn.onclick = function() { dlCheckBasic(syl); };
+    row.appendChild(btn);
+  });
+  wrap.appendChild(row);
+}
+
+function dlCheckBasic(chosen) {
+  if (!dlRunning || !dlCurrent) return;
+  if (chosen === dlCurrent.syl) {
+    dlOnCorrect();
+  } else {
+    dlOnWrong();
+  }
+}
+
+/* ---- ADVANCED MODE: keyboard ---- */
+function dlRenderKeyboard() {
+  var wrap = document.getElementById('dl-options-wrap');
+  wrap.innerHTML = '';
+  wrap.style.cssText = 'flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;padding:4px 8px 4px;gap:6px;';
+
+  /* Selected consonants row(s) */
+  var source = dlType === 'cluster' ? CLUSTERS : CONSONANTS;
+  var conRow = document.createElement('div');
+  conRow.style.cssText = 'display:flex;gap:6px;justify-content:center;flex-wrap:wrap;';
+  source.forEach(function(item) {
+    if (dlSelected.indexOf(item.c) < 0) return; /* solo las elegidas */
+    conRow.appendChild(dlMakeKeyBtn(item.c, item.color));
+  });
+  wrap.appendChild(conRow);
+
+  /* Vowels row */
+  var vowels = ['A','E','I','O','U'];
+  var vRow = document.createElement('div');
+  vRow.style.cssText = 'display:flex;gap:6px;justify-content:center;';
+  vowels.forEach(function(v) {
+    vRow.appendChild(dlMakeKeyBtn(v, VOWEL_COLORS[v] || '#1565c0'));
+  });
+  wrap.appendChild(vRow);
+
+  /* Action row: backspace + confirm */
+  var actRow = document.createElement('div');
+  actRow.style.cssText = 'display:flex;gap:12px;justify-content:center;margin-top:2px;';
+
+  var delBtn = document.createElement('button');
+  delBtn.className = 'back-btn';
+  delBtn.style.fontSize = '1.6rem';
+  delBtn.style.padding = '8px 18px';
+  delBtn.textContent = '⌫';
+  delBtn.onclick = function() {
+    if (dlTyped.length > 0) { dlTyped.pop(); dlRenderAnswerDisplay(); }
+  };
+  actRow.appendChild(delBtn);
+
+  var okBtn = document.createElement('button');
+  okBtn.style.cssText = 'padding:12px 32px;border-radius:14px;border:none;background:var(--accent);color:var(--ink);font-family:\'Fredoka One\',cursive;font-size:1.3rem;cursor:pointer;box-shadow:0 4px 0 rgba(0,0,0,.2);';
+  okBtn.textContent = '✓ Listo';
+  okBtn.onclick = dlCheckAdvanced;
+  actRow.appendChild(okBtn);
+
+  wrap.appendChild(actRow);
+}
+
+function dlMakeKeyBtn(label, color) {
+  var btn = document.createElement('button');
+  btn.className = 'con-btn';
+  btn.style.cssText = 'width:58px;height:58px;min-width:58px;background:' + color + ';';
+  var lbl = document.createElement('div');
+  lbl.className = 'con-letter';
+  lbl.style.cssText = 'color:#fff;font-size:1.7rem;';
+  lbl.textContent = label;
+  btn.appendChild(lbl);
+  btn.onclick = function() {
+    dlTyped.push(label);
+    dlRenderAnswerDisplay();
+  };
+  return btn;
+}
+
+function dlCheckAdvanced() {
+  if (!dlRunning || !dlCurrent) return;
+  var typed = dlTyped.join('').toUpperCase();
+  var target = dlCurrent.syl.toUpperCase();
+  if (typed === target) {
+    dlOnCorrect();
+  } else {
+    dlOnWrong();
+  }
+}
+
+/* ---- FEEDBACK ---- */
+function dlOnCorrect() {
+  dlScore++;
+  document.getElementById('dl-score').textContent = '⭐ ' + dlScore;
+  /* +1 pop */
+  var pill = document.getElementById('dl-score');
+  var rect = pill.getBoundingClientRect();
+  var pop = document.createElement('div');
+  pop.className = 'lu-point-pop';
+  pop.textContent = '+1';
+  pop.style.left = (rect.left + rect.width / 2 - 20) + 'px';
+  pop.style.top  = (rect.top - 10) + 'px';
+  document.body.appendChild(pop);
+  setTimeout(function(){ pop.remove(); }, 1000);
+
+  document.getElementById('dl-feedback').textContent = '¡Muy bien! ✅';
+  document.getElementById('dl-feedback').style.color = '#a5d6a7';
+  /* Disable options */
+  document.getElementById('dl-options-wrap').style.pointerEvents = 'none';
+  setTimeout(function() {
+    document.getElementById('dl-options-wrap').style.pointerEvents = '';
+    dlNextSyllable();
+  }, 1100);
+}
+
+function dlOnWrong() {
+  document.getElementById('dl-feedback').textContent = '¡Inténtalo otra vez! ❌';
+  document.getElementById('dl-feedback').style.color = '#ef9a9a';
+  /* flash + replay audio */
+  speakLoud(dlCurrent.syl);
+  if (dlLevel === 'advanced') {
+    dlTyped = [];
+    dlRenderAnswerDisplay();
+  }
+}
+/* ============================================================
+   ¿CUÁNTAS SÍLABAS? — variables y lógica
+   ============================================================ */
+var CS_WORDS = [
+  /* 1 sílaba */
+  {w:'Sol',    e:'☀️', s:1}, {w:'Pan',   e:'🍞', s:1}, {w:'Pez',  e:'🐟', s:1},
+  {w:'Flor',  e:'🌸', s:1}, {w:'Tren',  e:'🚂', s:1}, {w:'Pie',  e:'🦶', s:1},
+  {w:'Rey',   e:'👑', s:1}, {w:'Mar',   e:'🌊', s:1}, {w:'Sal',  e:'🧂', s:1},
+  /* 2 sílabas */
+  {w:'Casa',   e:'🏠', s:2}, {w:'Gato',  e:'🐱', s:2}, {w:'Mano',  e:'✋', s:2},
+  {w:'Boca',   e:'👄', s:2}, {w:'Luna',  e:'🌙', s:2}, {w:'Perro', e:'🐶', s:2},
+  {w:'Niño',   e:'👦', s:2}, {w:'Niña',  e:'👧', s:2}, {w:'Mamá',  e:'👩', s:2},
+  {w:'Papá',   e:'👨', s:2}, {w:'Silla', e:'🪑', s:2}, {w:'Nube',  e:'☁️', s:2},
+  {w:'Árbol',  e:'🌳', s:2}, {w:'Puerta',e:'🚪', s:2}, {w:'Leche', e:'🥛', s:2},
+  {w:'Coche',  e:'🚗', s:2}, {w:'Nariz', e:'👃', s:2}, {w:'Globo', e:'🎈', s:2},
+  {w:'Tigre',  e:'🐯', s:2}, {w:'Plato', e:'🍽️', s:2}, {w:'Llave', e:'🔑', s:2},
+  {w:'Lápiz',  e:'✏️', s:2}, {w:'Rojo',  e:'🔴', s:2}, {w:'Verde', e:'🟢', s:2},
+  {w:'Azul',   e:'🔵', s:2}, {w:'Uno',   e:'1️⃣', s:2}, {w:'Dos',   e:'2️⃣', s:2},
+  {w:'Tres',   e:'3️⃣', s:2},
+  /* 3 sílabas */
+  {w:'Pelota',  e:'⚽', s:3}, {w:'Camisa',  e:'👕', s:3}, {w:'Tomate',  e:'🍅', s:3},
+  {w:'Cuchara', e:'🥄', s:3}, {w:'Ventana', e:'🪟', s:3}, {w:'Zapato',  e:'👟', s:3},
+  {w:'Caballo', e:'🐴', s:3}, {w:'Conejo',  e:'🐰', s:3}, {w:'Tortuga', e:'🐢', s:3},
+  {w:'Helado',  e:'🍦', s:3}, {w:'Bufanda', e:'🧣', s:3}, {w:'Banana',  e:'🍌', s:3},
+  {w:'Maleta',  e:'🧳', s:3}, {w:'Abuelo',  e:'👴', s:3}, {w:'Abuela',  e:'👵', s:3},
+  {w:'Pintura', e:'🎨', s:3}, {w:'Naranja', e:'🟠', s:3}, {w:'Morado',  e:'🟣', s:3},
+  /* 4 sílabas */
+  {w:'Manzana',    e:'🍎', s:4}, {w:'Mariposa',   e:'🦋', s:4},
+  {w:'Cocodrilo',  e:'🐊', s:4}, {w:'Elefante',   e:'🐘', s:4},
+  {w:'Televisión', e:'📺', s:4}, {w:'Arcoíris',   e:'🌈', s:4},
+  {w:'Caracola',   e:'🐚', s:4}, {w:'Lavadora',   e:'🫧', s:4},
+  {w:'Amarillo',   e:'🟡', s:4}, {w:'Rotulador',  e:'🖊️', s:4},
+  {w:'Dinosaurio', e:'🦕', s:4}
+];
+
+var csCurrent   = null;
+var csScore     = 0;
+var csShowWord  = true;
+var csUsed      = [];
+
+function csStart() {
+  csScore  = 0;
+  csUsed   = [];
+  csShowWord = true;
+  document.getElementById('cs-score').textContent = '⭐ 0';
+  csNext();
+}
+
+function csNext() {
+  var remaining = CS_WORDS.filter(function(w){ return csUsed.indexOf(w.w) < 0; });
+  if (remaining.length === 0) { csUsed = []; remaining = CS_WORDS.slice(); }
+  csCurrent = remaining[Math.floor(Math.random() * remaining.length)];
+  csUsed.push(csCurrent.w);
+
+  document.getElementById('cs-emoji').textContent = csCurrent.e;
+  var wEl = document.getElementById('cs-word');
+  wEl.textContent = csCurrent.w;
+  wEl.style.visibility = csShowWord ? 'visible' : 'hidden';
+
+  var eyeBtn = document.getElementById('cs-eye-btn');
+  eyeBtn.textContent = csShowWord ? '👁️ Ocultar palabra' : '👁️ Mostrar palabra';
+
+  document.getElementById('cs-feedback').textContent = '';
+  document.getElementById('cs-feedback').style.color = '';
+
+  /* Generar 3 opciones: la correcta + 2 distractores */
+  var correct = csCurrent.s;
+  var opts = [correct];
+  var pool = [1,2,3,4];
+  pool.splice(pool.indexOf(correct), 1);
+  while (opts.length < 3) {
+    var pick = pool.splice(Math.floor(Math.random() * pool.length), 1)[0];
+    opts.push(pick);
+  }
+  /* Mezclar */
+  opts.sort(function(){ return Math.random() - 0.5; });
+
+  var colors = ['#1565c0','#ad1457','#2e7d32'];
+  var btns = document.querySelectorAll('.cs-opt-btn');
+  btns.forEach(function(btn, i) {
+    btn.dataset.val = opts[i];
+    btn.disabled = false;
+    btn.style.opacity = '1';
+    btn.style.transform = '';
+    btn.style.background = colors[i];
+    btn.querySelector('.con-letter').textContent = opts[i];
+  });
+}
+
+var csSecondChance = false; /* true cuando es el segundo intento */
+
+function csAnswer(val) {
+  if (!csCurrent) return;
+  var correct = csCurrent.s;
+  var btns = document.querySelectorAll('.cs-opt-btn');
+
+  var fb = document.getElementById('cs-feedback');
+  if (parseInt(val) === correct) {
+    btns.forEach(function(btn){ btn.disabled = true; });
+    csScore++;
+    document.getElementById('cs-score').textContent = '⭐ ' + csScore;
+    fb.textContent = csSecondChance ? '¡Bien, a la segunda! 👏' : '¡Correcto! 🎉';
+    fb.style.color = '#a5d6a7';
+    btns.forEach(function(btn){
+      if (parseInt(btn.dataset.val) === correct) { btn.style.background = '#2e7d32'; btn.style.transform = 'scale(1.15)'; }
+    });
+    csSecondChance = false;
+    setTimeout(csNext, 1400);
+  } else {
+    /* Marcar el botón pulsado en rojo y deshabilitarlo */
+    btns.forEach(function(btn){
+      if (parseInt(btn.dataset.val) === parseInt(val)) {
+        btn.style.background = '#b71c1c';
+        btn.disabled = true;
+      }
+    });
+    if (!csSecondChance) {
+      /* Primera vez que falla: segunda oportunidad con audio */
+      csSecondChance = true;
+      fb.textContent = '¡Inténtalo de nuevo! 👂';
+      fb.style.color = '#ffe082';
+      speakWordLoud(csCurrent.w);
+    } else {
+      /* Segunda vez que falla: revelar correcto y pasar */
+      btns.forEach(function(btn){ btn.disabled = true; });
+      btns.forEach(function(btn){
+        if (parseInt(btn.dataset.val) === correct) { btn.style.background = '#2e7d32'; btn.style.transform = 'scale(1.1)'; }
+      });
+      fb.textContent = '¡Eran ' + correct + ' sílabas! 💪';
+      fb.style.color = '#ef9a9a';
+      csSecondChance = false;
+      setTimeout(csNext, 2200);
+    }
+  }
+}
+
+function csToggleWord() {
+  csShowWord = !csShowWord;
+  var wEl = document.getElementById('cs-word');
+  wEl.style.visibility = csShowWord ? 'visible' : 'hidden';
+  document.getElementById('cs-eye-btn').textContent = csShowWord ? '👁️ Ocultar palabra' : '👁️ Mostrar palabra';
+}
 </script>
+
+<!-- ¿CUÁNTAS SÍLABAS? — pantalla de juego -->
+<div id="cs-game" class="screen">
+  <div class="game-topbar">
+    <button class="back-btn" onclick="showScreen('main-menu')">← Volver</button>
+    <div class="game-title">🔢 ¿Cuántas Sílabas?</div>
+    <div class="score-pill" id="cs-score">⭐ 0</div>
+  </div>
+
+  <!-- Imagen grande -->
+  <div style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 16px 0;flex-shrink:0;">
+    <div id="cs-emoji" style="font-size:6rem;line-height:1.1;text-align:center;">☀️</div>
+    <div id="cs-word" style="font-family:'Fredoka One',cursive;font-size:2.4rem;color:#fff;letter-spacing:2px;text-align:center;min-height:2.8rem;"></div>
+    <button id="cs-eye-btn" onclick="csToggleWord()" class="sylword-opt-btn" style="font-size:.85rem;padding:5px 14px;">👁️ Ocultar palabra</button>
+  </div>
+
+  <!-- Pregunta -->
+  <div style="font-family:'Fredoka One',cursive;font-size:1.3rem;color:rgba(255,255,255,.85);text-align:center;padding:10px 16px 4px;flex-shrink:0;">
+    ¿Cuántas sílabas tiene?
+  </div>
+
+  <!-- Opciones numéricas -->
+  <div style="display:flex;gap:16px;justify-content:center;padding:8px 16px;flex-shrink:0;">
+    <button class="cs-opt-btn con-btn" style="width:80px;height:80px;min-width:80px;background:#1565c0;font-size:0;" onclick="csAnswer(this.dataset.val)">
+      <div class="con-letter" style="font-size:2.6rem;color:#fff;"></div>
+    </button>
+    <button class="cs-opt-btn con-btn" style="width:80px;height:80px;min-width:80px;background:#ad1457;font-size:0;" onclick="csAnswer(this.dataset.val)">
+      <div class="con-letter" style="font-size:2.6rem;color:#fff;"></div>
+    </button>
+    <button class="cs-opt-btn con-btn" style="width:80px;height:80px;min-width:80px;background:#2e7d32;font-size:0;" onclick="csAnswer(this.dataset.val)">
+      <div class="con-letter" style="font-size:2.6rem;color:#fff;"></div>
+    </button>
+  </div>
+
+  <!-- Feedback -->
+  <div id="cs-feedback" style="text-align:center;font-family:'Fredoka One',cursive;font-size:1.4rem;height:2.4rem;line-height:2.4rem;flex-shrink:0;"></div>
+</div>
 
 </body></html>
