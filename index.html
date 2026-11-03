@@ -1,22 +1,30 @@
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
-<title>El Coche de las Sílabas</title>
+<title>Silabín</title>
+<link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAC2UlEQVR4nO1bMWsbMRR+d3gNGArBUAhkNJTSLVk6Zs9iQiFLh26hS6f+gJApS8mW1VBKl+wZuyRbCIGOgUDBLRQM2e0ORY6ie5Ke3tPdyaf7lhzHSe/7Pj09PTu+AhrCbL5Yhjw/GpZFXVx01BYkVLAPdRkSfdLYwk3ENiLaZHULNxHLCPEkTQs3ITWCPbht4Sa4RpScQamJB+BzCjYgRfEKHG7ktElZOAbqliBlwLqJB6Bz9hqwjuIVKNxZRbBLcBqwzquv4NNgNaAL4hVcWlADuiRewaaprwHmjS6uvgKmLfsMeNYtcVf/7PpPHDYMHO1sBo/Ru0SRAW0KNxFihG7AQF1I9v6rlxveZ+5+PbLGhcxHxWy+WCoT2DVArT5VhPmcRDw2npuNJUC3K78NSnP2p0BvQNsE2kaZ4/5XmM0Xy+wzYOB/5Amfvv9cXW9vvYhORgqd3+lkTBpDzgB98nUAlS/JAGyy+4e/AEDvyMznJJ0cNl7x0UExofAVQdckKW0DzAAF13YIqgG2oG0a4RI+vbn6f6H+AsDv4/fPnhFlQMqYaqJN6CZkfwz2BrRNoG30BjT1a6ymcfhmF72vF8DRsCxEx2DqUCa4+oDst4AoA26/fK7ce/3xRDJl43FX+9/WEGGNEEYgFiEXuHGxLcD+VphCIuS5tuOuDLCdBrp7oZPHMkES17X6AMQacDoZWz8TnH/7urr+cPCOzlIISlzKlyKVVbfVgr23+04SLjKSeoCtPjXu5Y+Lyj0z09kGYCRsZDAiVMSOaxpQKYJd7QwBcG3ZN0KoAZQssBWeugshN65NkzUDzAHYfjKDUgtRCGLEdS2o8xgcDUvvV2ZNHn2cuL5sDqoBoaspXf0m4noNoGwFKYmY81FTX0H0c3msOYotHAMlLvU4Dz7zU/9vcmgfE9wHpNwocbixGqEUTeBy6l+bi0Uk2xcnTWT76qyJbF+etiHV1+f/Ab2SZ0LIhUQmAAAAAElFTkSuQmCC">
 <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@700;900&display=swap" rel="stylesheet">
 <style>
-/* ── DESIGN TOKENS ── fondo azul pizarra, fichas blancas, coche azul */
+/* ── DESIGN TOKENS ── iOS pastel, fondo claro, tarjetas blancas ── */
 :root {
-  --bg:         #3a6ea5;
-  --bg-dark:    #2a5080;
-  --road-color: #4a4a5a;
+  --bg:         #f0f4ff;
+  --bg-grad1:   #e8f0fe;
+  --bg-grad2:   #fce4f0;
+  --road-color: #c8d6f5;
   --road-line:  #fff;
-  --card-bg:    #f5f5f5;
-  --card-border:#ddd;
+  --card-bg:    #ffffff;
+  --card-border:#e0e8ff;
   --car-blue:   #5b9bd5;
   --car-dark:   #2a6aab;
   --car-window: #a8d4f5;
-  --accent:     #ffd600;
+  --accent:     #ff6b9d;
+  --accent2:    #7c5cbf;
+  --accent3:    #38b2ac;
   --white:      #ffffff;
-  --ink:        #1a1a2e;
+  --ink:        #2d2d4e;
+  --ink-soft:   #6b7280;
   --syl-pop:    #ffffff;
+  --shadow-sm:  0 2px 12px rgba(99,102,241,.10);
+  --shadow-md:  0 4px 24px rgba(99,102,241,.14);
+  --shadow-btn: 0 4px 0 rgba(0,0,0,.10);
   color-scheme: light;
 }
 
@@ -24,8 +32,8 @@
 html, body { height: 100%; overflow: hidden; }
 body {
   font-family: 'Nunito', sans-serif;
-  background: var(--bg);
-  color: var(--white);
+  background: linear-gradient(135deg, var(--bg-grad1) 0%, var(--bg) 50%, var(--bg-grad2) 100%);
+  color: var(--ink);
   display: flex; flex-direction: column;
   height: 100%;
   padding: 0;
@@ -39,7 +47,7 @@ body {
    WELCOME SCREEN
 ══════════════════════════════════════ */
 #welcome {
-  background: linear-gradient(160deg, #2a5080 0%, #3a6ea5 50%, #2a5080 100%);
+  background: transparent;
   align-items: center; justify-content: flex-start;
   gap: 0; overflow-y: auto; padding-bottom: 20px;
 }
@@ -51,34 +59,35 @@ body {
 .welcome-header h1 {
   font-family: 'Fredoka One', cursive;
   font-size: clamp(2rem, 7vw, 3.5rem);
-  color: var(--accent);
-  text-shadow: 0 3px 0 rgba(0,0,0,0.25);
+  color: #0ea5a0;
+  text-shadow: 0 2px 0 rgba(14,165,160,.18);
   letter-spacing: 1px;
 }
 .welcome-header p {
   font-size: clamp(.9rem, 2.5vw, 1.1rem);
-  opacity: .85; margin-top: 4px;
+  color: var(--ink-soft); margin-top: 4px;
 }
 
 /* Mini road preview */
 .welcome-road {
   width: min(340px, 90%); height: 52px;
-  background: var(--road-color); border-radius: 8px;
+  background: var(--road-color); border-radius: 16px;
   position: relative; margin: 10px auto;
   flex-shrink: 0; overflow: hidden;
+  box-shadow: var(--shadow-sm);
 }
 .welcome-road::after {
   content: '';
   position: absolute; top: 50%; left: 0; right: 0; height: 3px;
-  background: repeating-linear-gradient(90deg, var(--accent) 0, var(--accent) 20px, transparent 20px, transparent 40px);
-  transform: translateY(-50%);
+  background: repeating-linear-gradient(90deg, #fff 0, #fff 20px, transparent 20px, transparent 40px);
+  transform: translateY(-50%); opacity: .6;
 }
 .preview-car { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); font-size: 2rem; }
 
 .grid-title {
   font-family: 'Fredoka One', cursive;
   font-size: clamp(1rem,3vw,1.3rem);
-  color: var(--accent); letter-spacing: .5px;
+  color: var(--accent2); letter-spacing: .5px;
   margin: 12px 20px 8px; text-align: center; flex-shrink: 0;
 }
 
@@ -91,23 +100,23 @@ body {
 }
 .con-btn {
   background: var(--card-bg);
-  border: none; border-radius: 14px;
+  border: none; border-radius: 18px;
   padding: 9px 4px 7px;
   cursor: pointer;
   display: flex; flex-direction: column; align-items: center; gap: 2px;
-  box-shadow: 0 4px 0 rgba(0,0,0,0.2), 0 6px 14px rgba(0,0,0,0.15);
+  box-shadow: var(--shadow-sm), 0 3px 0 rgba(0,0,0,.08);
   transition: transform .12s, box-shadow .12s;
 }
-.con-btn:hover { transform: translateY(-3px); box-shadow: 0 7px 0 rgba(0,0,0,0.2), 0 10px 20px rgba(0,0,0,0.15); }
-.con-btn:active { transform: translateY(1px); }
+.con-btn:hover { transform: translateY(-3px); box-shadow: var(--shadow-md), 0 5px 0 rgba(0,0,0,.10); }
+.con-btn:active { transform: translateY(1px); box-shadow: 0 1px 0 rgba(0,0,0,.08); }
 .con-letter { font-family: 'Fredoka One', cursive; font-size: 1.9rem; line-height: 1; }
-.con-sub    { font-size: .7rem; font-weight: 700; color: #666; }
+.con-sub    { font-size: .7rem; font-weight: 700; color: rgba(255,255,255,.75); }
 
 /* ══════════════════════════════════════
    GAME SCREEN
 ══════════════════════════════════════ */
 #game {
-  background: linear-gradient(180deg, #2a5080 0%, #3a6ea5 100%);
+  background: transparent;
   overflow: hidden;
 }
 
@@ -116,24 +125,26 @@ body {
   padding: 10px 16px 6px; flex-shrink: 0; z-index: 20;
 }
 .back-btn {
-  background: rgba(255,255,255,.18); border: 2px solid rgba(255,255,255,.4);
-  border-radius: 12px; padding: 6px 14px; cursor: pointer;
-  font-family: 'Fredoka One', cursive; font-size: .95rem; color: var(--white);
-  transition: background .15s;
+  background: var(--white); border: none;
+  border-radius: 14px; padding: 7px 16px; cursor: pointer;
+  font-family: 'Fredoka One', cursive; font-size: .95rem; color: var(--ink);
+  box-shadow: var(--shadow-sm);
+  transition: transform .12s, box-shadow .12s;
 }
-.back-btn:hover { background: rgba(255,255,255,.28); }
+.back-btn:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+.back-btn:active { transform: translateY(1px); }
 
 .game-title {
   font-family: 'Fredoka One', cursive;
   font-size: clamp(1.1rem, 4vw, 1.7rem);
-  color: var(--accent);
+  color: var(--accent2);
   flex: 1; text-align: center;
 }
 .score-pill {
   background: var(--accent); border-radius: 20px;
   padding: 4px 14px;
-  font-family: 'Fredoka One', cursive; font-size: 1rem; color: var(--ink);
-  box-shadow: 0 3px 0 rgba(0,0,0,0.2);
+  font-family: 'Fredoka One', cursive; font-size: 1rem; color: var(--white);
+  box-shadow: 0 3px 0 rgba(255,107,157,.35);
 }
 
 /* ── Roads container ── */
@@ -154,17 +165,18 @@ body {
 }
 .road-surface {
   position: absolute; inset: 0;
-  background: #3a3a4a;
+  background: var(--road-color);
   border-radius: 10px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+  box-shadow: var(--shadow-sm);
   overflow: hidden;
 }
 .road-surface::before {  /* top edge */
-  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 5px; background: #555;
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 5px;
+  background: rgba(99,102,241,.12);
 }
 .road-surface::after {   /* dashes */
   content: ''; position: absolute; top: 50%; left: 0; right: 0; height: 4px;
-  background: repeating-linear-gradient(90deg, rgba(255,255,255,.5) 0, rgba(255,255,255,.5) 22px, transparent 22px, transparent 44px);
+  background: repeating-linear-gradient(90deg, rgba(255,255,255,.7) 0, rgba(255,255,255,.7) 22px, transparent 22px, transparent 44px);
   transform: translateY(-50%);
 }
 
@@ -278,18 +290,19 @@ body {
   letter-spacing: .5px;
   padding: 8px 18px;
   border-radius: 30px;
-  border: 2.5px solid rgba(255,255,255,.35);
-  background: rgba(255,255,255,.1);
-  color: rgba(255,255,255,.65);
+  border: 2px solid var(--card-border);
+  background: var(--white);
+  color: var(--ink-soft);
   cursor: pointer;
   transition: transform .12s, background .15s, color .15s, border-color .15s, box-shadow .15s;
+  box-shadow: var(--shadow-sm);
 }
-.type-filter-btn:hover { transform: translateY(-2px); }
+.type-filter-btn:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
 .type-filter-btn.type-selected {
   background: var(--accent);
   border-color: var(--accent);
-  color: var(--ink);
-  box-shadow: 0 4px 0 rgba(0,0,0,.25), 0 0 0 3px rgba(255,214,0,.35);
+  color: var(--white);
+  box-shadow: 0 4px 0 rgba(255,107,157,.3), var(--shadow-sm);
   transform: translateY(-2px);
 }
 
@@ -316,31 +329,32 @@ body {
    MAIN MENU SCREEN
 ══════════════════════════════════════ */
 #main-menu {
-  background: linear-gradient(160deg, #2a5080 0%, #3a6ea5 50%, #2a5080 100%);
+  background: transparent;
   align-items: center; justify-content: center;
-  gap: 24px; padding: 24px 20px;
+  gap: 20px; padding: 24px 20px;
 }
 .menu-header { text-align: center; }
 .menu-header h1 {
   font-family: 'Fredoka One', cursive;
   font-size: clamp(2rem, 7vw, 3.2rem);
-  color: var(--accent);
-  text-shadow: 0 3px 0 rgba(0,0,0,0.25);
+  color: #0ea5a0;
+  text-shadow: 0 2px 0 rgba(14,165,160,.18);
 }
 .menu-header p {
   font-size: clamp(.9rem, 2.5vw, 1.1rem);
-  opacity: .75; margin-top: 4px;
+  color: var(--ink-soft); margin-top: 4px;
 }
 .menu-road {
   width: min(340px, 90%); height: 52px;
-  background: var(--road-color); border-radius: 8px;
+  background: var(--road-color); border-radius: 16px;
   position: relative; overflow: hidden;
+  box-shadow: var(--shadow-sm);
 }
 .menu-road::after {
   content: '';
   position: absolute; top: 50%; left: 0; right: 0; height: 3px;
-  background: repeating-linear-gradient(90deg, var(--accent) 0, var(--accent) 20px, transparent 20px, transparent 40px);
-  transform: translateY(-50%);
+  background: repeating-linear-gradient(90deg, #fff 0, #fff 20px, transparent 20px, transparent 40px);
+  transform: translateY(-50%); opacity: .7;
 }
 
 .menu-buttons {
@@ -353,46 +367,46 @@ body {
 .menu-btn {
   display: flex; flex-direction: column; align-items: center; justify-content: center;
   gap: 6px;
-  background: rgba(255,255,255,0.12);
-  border: 2px solid rgba(255,255,255,0.25);
-  border-radius: 18px;
-  padding: 12px 6px 11px;
+  background: var(--white);
+  border: none;
+  border-radius: 22px;
+  padding: 14px 6px 12px;
   cursor: pointer;
   text-align: center;
-  transition: background .15s, transform .12s, box-shadow .12s;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+  transition: transform .12s, box-shadow .12s;
+  box-shadow: var(--shadow-sm), 0 3px 0 rgba(0,0,0,.06);
   width: 100%;
 }
-.menu-btn:hover  { background: rgba(255,255,255,0.22); transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.28); }
-.menu-btn:active { transform: translateY(1px); }
-.menu-btn.disabled { opacity: .45; cursor: default; pointer-events: none; }
+.menu-btn:hover  { transform: translateY(-4px); box-shadow: var(--shadow-md), 0 6px 0 rgba(0,0,0,.08); }
+.menu-btn:active { transform: translateY(1px); box-shadow: 0 1px 4px rgba(0,0,0,.08); }
+.menu-btn.disabled { opacity: .40; cursor: default; pointer-events: none; }
 .menu-btn-icon {
   font-size: 2rem;
-  width: 48px; height: 48px;
-  background: rgba(255,255,255,0.15);
-  border-radius: 14px;
+  width: 50px; height: 50px;
+  background: linear-gradient(135deg, #f0f4ff 0%, #fce4f0 100%);
+  border-radius: 16px;
   display: flex; align-items: center; justify-content: center;
 }
 .menu-btn-title {
   font-family: 'Fredoka One', cursive;
   font-size: clamp(.75rem, 2.4vw, .9rem);
-  color: var(--accent);
+  color: var(--accent2);
   line-height: 1.2;
 }
 .menu-btn-text { display: contents; }
 .menu-btn-desc {
-  font-size: .72rem;
-  color: rgba(255,255,255,0.7);
+  font-size: .68rem;
+  color: var(--ink-soft);
   line-height: 1.3;
-  margin-top: 2px;
+  margin-top: 1px;
 }
 .menu-btn-arrow { display: none; }
 .lu-point-pop {
   position: fixed;
   font-family: 'Fredoka One', cursive;
   font-size: 1.6rem;
-  color: #ffd600;
-  text-shadow: 0 2px 8px rgba(0,0,0,0.4);
+  color: var(--accent);
+  text-shadow: 0 2px 8px rgba(255,107,157,.4);
   pointer-events: none;
   z-index: 9999;
   animation: luPointAnim 1s ease-out forwards;
@@ -404,9 +418,9 @@ body {
 }
 .coming-soon {
   font-size: .7rem; font-weight: 700;
-  background: rgba(255,255,255,.2);
+  background: rgba(124,92,191,.15);
   border-radius: 8px; padding: 2px 8px;
-  color: var(--white); margin-top: 4px;
+  color: var(--accent2); margin-top: 4px;
   display: inline-block;
 }
 
@@ -420,44 +434,47 @@ body {
 #drive-syl-display {
   font-family: 'Fredoka One', cursive;
   font-size: clamp(2rem, 8vw, 3.2rem);
-  color: var(--accent);
-  text-shadow: 0 3px 0 rgba(0,0,0,0.25);
-  background: rgba(0,0,0,0.2);
+  color: var(--accent2);
+  text-shadow: none;
+  background: var(--white);
   border-radius: 16px;
   padding: 4px 28px;
   min-width: 120px; text-align: center;
   letter-spacing: 2px;
+  box-shadow: var(--shadow-sm);
 }
 #drive-repeat-btn {
-  background: rgba(255,255,255,0.18);
-  border: 2px solid rgba(255,255,255,0.35);
+  background: var(--white);
+  border: none;
   border-radius: 14px; padding: 8px 14px;
-  font-size: 1.3rem; color: var(--white); cursor: pointer;
-  transition: background .15s; flex-shrink: 0;
+  font-size: 1.3rem; color: var(--accent); cursor: pointer;
+  transition: transform .12s, box-shadow .12s; flex-shrink: 0;
+  box-shadow: var(--shadow-sm);
 }
-#drive-repeat-btn:hover { background: rgba(255,255,255,0.28); }
+#drive-repeat-btn:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
 
 #drive-toggle-label {
   display: flex; align-items: center; gap: 6px;
   cursor: pointer; flex-shrink: 0;
-  background: rgba(255,255,255,0.12);
-  border: 2px solid rgba(255,255,255,0.25);
+  background: var(--white);
+  border: none;
   border-radius: 12px; padding: 6px 12px;
-  font-family: 'Fredoka One', cursive; font-size: .9rem; color: var(--white);
+  font-family: 'Fredoka One', cursive; font-size: .9rem; color: var(--ink-soft);
   user-select: none;
+  box-shadow: var(--shadow-sm);
 }
 #drive-toggle-label input { accent-color: var(--accent); width:16px; height:16px; cursor:pointer; }
 
 /* Sílaba oculta: muestra solo el icono de audio */
-#drive-syl-display.syl-hidden { color: transparent; text-shadow: none; background: rgba(0,0,0,0.15); }
-#drive-syl-display.syl-hidden::after { content: '🔇'; color: rgba(255,255,255,.4); }
+#drive-syl-display.syl-hidden { color: transparent; text-shadow: none; background: var(--card-border); }
+#drive-syl-display.syl-hidden::after { content: '🔇'; color: var(--ink-soft); }
 </style>
 
 <!-- MAIN MENU -->
 <div id="main-menu" class="screen active">
-  <button id="fullscreen-btn" onclick="toggleFullscreen()" title="Pantalla completa" style="position:absolute;top:14px;right:14px;background:rgba(255,255,255,0.15);border:2px solid rgba(255,255,255,0.3);border-radius:12px;padding:8px 12px;font-size:1.3rem;cursor:pointer;transition:background .15s;z-index:10;">⛶</button>
+  <button id="fullscreen-btn" onclick="toggleFullscreen()" title="Pantalla completa" style="position:absolute;top:14px;right:14px;background:var(--white);border:none;border-radius:12px;padding:8px 12px;font-size:1.3rem;cursor:pointer;transition:all .15s;z-index:10;box-shadow:var(--shadow-sm);color:var(--accent2);">⛶</button>
   <div class="menu-header">
-    <h1>🚗 El Coche de las Sílabas</h1>
+    <h1>🚗 Silabín</h1>
     <p>Elige un modo de juego</p>
   </div>
   <div class="menu-road"></div>
@@ -615,7 +632,7 @@ body {
     <div id="word-collected" style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;justify-content:center;"></div>
   </div>
   <!-- Carretera de 3 carriles -->
-  <div id="word-road-wrap" style="flex:1;min-height:0;position:relative;margin:6px 12px 10px;border-radius:12px;overflow:hidden;background:#3a3a4a;box-shadow:0 2px 12px rgba(0,0,0,.35);touch-action:none;user-select:none;">
+  <div id="word-road-wrap" style="flex:1;min-height:0;position:relative;margin:6px 12px 10px;border-radius:16px;overflow:hidden;background:var(--road-color);box-shadow:var(--shadow-md);touch-action:none;user-select:none;">
     <!-- líneas de carril -->
     <div id="word-lane-lines" style="position:absolute;inset:0;pointer-events:none;z-index:1;"></div>
     <!-- opciones de letra (3 carriles) -->
@@ -769,7 +786,7 @@ body {
     <div class="score-pill" id="lu-score">⭐ 0</div>
   </div>
   <!-- Carretera única con el coche que lleva la palabra -->
-  <div id="lu-road-wrap" style="flex:1;min-height:0;position:relative;margin:8px 12px 10px;border-radius:12px;overflow:hidden;background:#3a3a4a;box-shadow:0 2px 12px rgba(0,0,0,.35);touch-action:none;user-select:none;">
+  <div id="lu-road-wrap" style="flex:1;min-height:0;position:relative;margin:8px 12px 10px;border-radius:16px;overflow:hidden;background:var(--road-color);box-shadow:var(--shadow-md);touch-action:none;user-select:none;">
     <div id="lu-lane-lines" style="position:absolute;inset:0;pointer-events:none;z-index:1;"></div>
     <div id="lu-lane-emojis" style="position:absolute;inset:0;pointer-events:none;z-index:5;"></div>
     <div id="lu-car" style="position:absolute;z-index:10;cursor:grab;touch-action:none;user-select:none;display:flex;flex-direction:column;align-items:center;gap:0;overflow:visible;"></div>
@@ -3249,8 +3266,8 @@ var sylwordUsed = [];
 (function injectSylwordStyles() {
   var style = document.createElement('style');
   style.textContent = [
-    '.sylword-opt-btn{background:transparent;border:2px solid rgba(255,255,255,.3);border-radius:10px;padding:6px 16px;font-family:\'Fredoka One\',cursive;font-size:.95rem;color:rgba(255,255,255,.7);cursor:pointer;transition:all .15s;}',
-    '.sylword-opt-btn.sylword-opt-active{background:var(--accent);border-color:var(--accent);color:var(--ink);}',
+    '.sylword-opt-btn{background:var(--white);border:2px solid var(--card-border);border-radius:10px;padding:6px 16px;font-family:\'Fredoka One\',cursive;font-size:.95rem;color:var(--ink-soft);cursor:pointer;transition:all .15s;box-shadow:var(--shadow-sm);}',
+    '.sylword-opt-btn.sylword-opt-active{background:var(--accent);border-color:var(--accent);color:var(--white);box-shadow:0 3px 0 rgba(255,107,157,.25);}',
     '.sylword-syl-btn{min-width:60px;padding:12px 18px;border-radius:16px;border:3px solid rgba(255,255,255,.5);background:rgba(255,255,255,.12);font-family:\'Fredoka One\',cursive;font-size:1.5rem;color:#fff;cursor:pointer;transition:transform .1s,background .15s;user-select:none;}',
     '.sylword-syl-btn:active{transform:scale(.92);}',
     '.sylword-syl-btn.used{opacity:.25;pointer-events:none;}',
@@ -4544,7 +4561,7 @@ function csNext() {
   /* Mezclar */
   opts.sort(function(){ return Math.random() - 0.5; });
 
-  var colors = ['#1565c0','#ad1457','#2e7d32'];
+  var colors = ['#5b9fd8','#ff6b9d','#56b87a'];
   var btns = document.querySelectorAll('.cs-opt-btn');
   btns.forEach(function(btn, i) {
     btn.dataset.val = opts[i];
@@ -4569,9 +4586,9 @@ function csAnswer(val) {
     csScore++;
     document.getElementById('cs-score').textContent = '⭐ ' + csScore;
     fb.textContent = csSecondChance ? '¡Bien, a la segunda! 👏' : '¡Correcto! 🎉';
-    fb.style.color = '#a5d6a7';
+    fb.style.color = '#56b87a';
     btns.forEach(function(btn){
-      if (parseInt(btn.dataset.val) === correct) { btn.style.background = '#2e7d32'; btn.style.transform = 'scale(1.15)'; }
+      if (parseInt(btn.dataset.val) === correct) { btn.style.background = '#56b87a'; btn.style.transform = 'scale(1.15)'; }
     });
     csSecondChance = false;
     setTimeout(csNext, 1400);
@@ -4579,7 +4596,7 @@ function csAnswer(val) {
     /* Marcar el botón pulsado en rojo y deshabilitarlo */
     btns.forEach(function(btn){
       if (parseInt(btn.dataset.val) === parseInt(val)) {
-        btn.style.background = '#b71c1c';
+        btn.style.background = '#e06060';
         btn.disabled = true;
       }
     });
@@ -4587,16 +4604,16 @@ function csAnswer(val) {
       /* Primera vez que falla: segunda oportunidad con audio */
       csSecondChance = true;
       fb.textContent = '¡Inténtalo de nuevo! 👂';
-      fb.style.color = '#ffe082';
+      fb.style.color = '#f59e42';
       speakWordLoud(csCurrent.w);
     } else {
       /* Segunda vez que falla: revelar correcto y pasar */
       btns.forEach(function(btn){ btn.disabled = true; });
       btns.forEach(function(btn){
-        if (parseInt(btn.dataset.val) === correct) { btn.style.background = '#2e7d32'; btn.style.transform = 'scale(1.1)'; }
+        if (parseInt(btn.dataset.val) === correct) { btn.style.background = '#56b87a'; btn.style.transform = 'scale(1.1)'; }
       });
       fb.textContent = '¡Eran ' + correct + ' sílabas! 💪';
-      fb.style.color = '#ef9a9a';
+      fb.style.color = '#e06060';
       csSecondChance = false;
       setTimeout(csNext, 2200);
     }
@@ -4622,24 +4639,24 @@ function csToggleWord() {
   <!-- Imagen grande -->
   <div style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 16px 0;flex-shrink:0;">
     <div id="cs-emoji" style="font-size:6rem;line-height:1.1;text-align:center;">☀️</div>
-    <div id="cs-word" style="font-family:'Fredoka One',cursive;font-size:2.4rem;color:#fff;letter-spacing:2px;text-align:center;min-height:2.8rem;"></div>
+    <div id="cs-word" style="font-family:'Fredoka One',cursive;font-size:2.4rem;color:var(--accent2);letter-spacing:2px;text-align:center;min-height:2.8rem;"></div>
     <button id="cs-eye-btn" onclick="csToggleWord()" class="sylword-opt-btn" style="font-size:.85rem;padding:5px 14px;">👁️ Ocultar palabra</button>
   </div>
 
   <!-- Pregunta -->
-  <div style="font-family:'Fredoka One',cursive;font-size:1.3rem;color:rgba(255,255,255,.85);text-align:center;padding:10px 16px 4px;flex-shrink:0;">
+  <div style="font-family:'Fredoka One',cursive;font-size:1.3rem;color:var(--ink-soft);text-align:center;padding:10px 16px 4px;flex-shrink:0;">
     ¿Cuántas sílabas tiene?
   </div>
 
   <!-- Opciones numéricas -->
   <div style="display:flex;gap:16px;justify-content:center;padding:8px 16px;flex-shrink:0;">
-    <button class="cs-opt-btn con-btn" style="width:80px;height:80px;min-width:80px;background:#1565c0;font-size:0;" onclick="csAnswer(this.dataset.val)">
+    <button class="cs-opt-btn con-btn" style="width:80px;height:80px;min-width:80px;background:#5b9fd8;font-size:0;" onclick="csAnswer(this.dataset.val)">
       <div class="con-letter" style="font-size:2.6rem;color:#fff;"></div>
     </button>
-    <button class="cs-opt-btn con-btn" style="width:80px;height:80px;min-width:80px;background:#ad1457;font-size:0;" onclick="csAnswer(this.dataset.val)">
+    <button class="cs-opt-btn con-btn" style="width:80px;height:80px;min-width:80px;background:var(--accent);font-size:0;" onclick="csAnswer(this.dataset.val)">
       <div class="con-letter" style="font-size:2.6rem;color:#fff;"></div>
     </button>
-    <button class="cs-opt-btn con-btn" style="width:80px;height:80px;min-width:80px;background:#2e7d32;font-size:0;" onclick="csAnswer(this.dataset.val)">
+    <button class="cs-opt-btn con-btn" style="width:80px;height:80px;min-width:80px;background:#56b87a;font-size:0;" onclick="csAnswer(this.dataset.val)">
       <div class="con-letter" style="font-size:2.6rem;color:#fff;"></div>
     </button>
   </div>
