@@ -387,6 +387,23 @@ body {
   border-radius: 16px;
   display: flex; align-items: center; justify-content: center;
 }
+/* Colores únicos por juego */
+.menu-btn.color-red    { border-top: 4px solid #ff6b6b; }
+.menu-btn.color-orange { border-top: 4px solid #ff9f43; }
+.menu-btn.color-yellow { border-top: 4px solid #ffd43b; }
+.menu-btn.color-green  { border-top: 4px solid #51cf66; }
+.menu-btn.color-teal   { border-top: 4px solid #20c997; }
+.menu-btn.color-blue   { border-top: 4px solid #339af0; }
+.menu-btn.color-purple { border-top: 4px solid #9775fa; }
+.menu-btn.color-pink   { border-top: 4px solid #f06595; }
+.menu-btn.color-red    .menu-btn-icon { background: #fff0f0; }
+.menu-btn.color-orange .menu-btn-icon { background: #fff4e6; }
+.menu-btn.color-yellow .menu-btn-icon { background: #fff9db; }
+.menu-btn.color-green  .menu-btn-icon { background: #ebfbee; }
+.menu-btn.color-teal   .menu-btn-icon { background: #e6fcf5; }
+.menu-btn.color-blue   .menu-btn-icon { background: #e7f5ff; }
+.menu-btn.color-purple .menu-btn-icon { background: #f3f0ff; }
+.menu-btn.color-pink   .menu-btn-icon { background: #fff0f6; }
 .menu-btn-title {
   font-family: 'Fredoka One', cursive;
   font-size: clamp(.75rem, 2.4vw, .9rem);
@@ -479,42 +496,42 @@ body {
   </div>
   <div class="menu-road"></div>
   <div class="menu-buttons">
-    <button class="menu-btn" onclick="showScreen('welcome')">
+    <button class="menu-btn color-red" onclick="showScreen('welcome')">
       <div class="menu-btn-icon">🔤</div>
       <div class="menu-btn-title">Vocales Directas</div>
       <div class="menu-btn-desc">Lleva el coche a la vocal correcta</div>
     </button>
-    <button class="menu-btn" onclick="showScreen('drive-welcome')">
+    <button class="menu-btn color-orange" onclick="showScreen('drive-welcome')">
       <div class="menu-btn-icon">🏎️</div>
       <div class="menu-btn-title">Conduce tu Coche</div>
       <div class="menu-btn-desc">Escucha la sílaba y conduce al carril correcto</div>
     </button>
-    <button class="menu-btn" onclick="showScreen('word-welcome')">
+    <button class="menu-btn color-yellow" onclick="showScreen('word-welcome')">
       <div class="menu-btn-icon">📝</div>
       <div class="menu-btn-title">Forma tu Palabra</div>
       <div class="menu-btn-desc">Une sílabas para formar la palabra del emoji</div>
     </button>
-    <button class="menu-btn" onclick="showScreen('sylword-welcome')">
+    <button class="menu-btn color-green" onclick="showScreen('sylword-welcome')">
       <div class="menu-btn-icon">🧩</div>
       <div class="menu-btn-title">Forma por Sílabas</div>
       <div class="menu-btn-desc">Ordena las sílabas y completa la palabra</div>
     </button>
-    <button class="menu-btn" onclick="showScreen('memory-welcome'); memInitWelcome();">
+    <button class="menu-btn color-teal" onclick="showScreen('memory-welcome'); memInitWelcome();">
       <div class="menu-btn-icon">🃏</div>
       <div class="menu-btn-title">Memoria de Sílabas</div>
       <div class="menu-btn-desc">Encuentra las parejas de sílabas y emojis</div>
     </button>
-    <button class="menu-btn" onclick="showScreen('leeune-welcome'); luInitWelcome();">
+    <button class="menu-btn color-blue" onclick="showScreen('leeune-welcome'); luInitWelcome();">
       <div class="menu-btn-icon">📖</div>
       <div class="menu-btn-title">Lee tu Coche</div>
       <div class="menu-btn-desc">Lee la palabra del coche y llévalo a su emoji</div>
     </button>
-    <button class="menu-btn" onclick="showScreen('dictado-welcome'); dlInitWelcome();">
+    <button class="menu-btn color-purple" onclick="showScreen('dictado-welcome'); dlInitWelcome();">
       <div class="menu-btn-icon">🎤</div>
       <div class="menu-btn-title">Dictado Loco</div>
       <div class="menu-btn-desc">Escucha la sílaba y escríbela o encuéntrala</div>
     </button>
-    <button class="menu-btn" onclick="showScreen('cs-game'); csStart();">
+    <button class="menu-btn color-pink" onclick="showScreen('cs-game'); csStart();">
       <div class="menu-btn-icon">🔢</div>
       <div class="menu-btn-title">¿Cuántas Sílabas?</div>
       <div class="menu-btn-desc">Cuenta las sílabas de la palabra</div>
