@@ -2,9 +2,16 @@
 <title>Silabín</title>
 <script>
 (function(){
+  var c=document.createElement('canvas');
+  c.width=64;c.height=64;
+  var ctx=c.getContext('2d');
+  ctx.font='52px serif';
+  ctx.textAlign='center';
+  ctx.textBaseline='middle';
+  ctx.fillText('🚗',32,36);
   var l=document.createElement('link');
   l.rel='icon';l.type='image/png';
-  l.href='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAC2UlEQVR4nO1bMWsbMRR+d3gNGArBUAhkNJTSLVk6Zs9iQiFLh26hS6f+gJApS8mW1VBKl+wZuyRbCIGOgUDBLRQM2e0ORY6ie5Ke3tPdyaf7lhzHSe/7Pj09PTu+AhrCbL5Yhjw/GpZFXVx01BYkVLAPdRkSfdLYwk3ENiLaZHULNxHLCPEkTQs3ITWCPbht4Sa4RpScQamJB+BzCjYgRfEKHG7ktElZOAbqliBlwLqJB6Bz9hqwjuIVKNxZRbBLcBqwzquv4NNgNaAL4hVcWlADuiRewaaprwHmjS6uvgKmLfsMeNYtcVf/7PpPHDYMHO1sBo/Ru0SRAW0KNxFihG7AQF1I9v6rlxveZ+5+PbLGhcxHxWy+WCoT2DVArT5VhPmcRDw2npuNJUC3K78NSnP2p0BvQNsE2kaZ4/5XmM0Xy+wzYOB/5Amfvv9cXW9vvYhORgqd3+lkTBpDzgB98nUAlS/JAGyy+4e/AEDvyMznJJ0cNl7x0UExofAVQdckKW0DzAAF13YIqgG2oG0a4RI+vbn6f6H+AsDv4/fPnhFlQMqYaqJN6CZkfwz2BrRNoG30BjT1a6ymcfhmF72vF8DRsCxEx2DqUCa4+oDst4AoA26/fK7ce/3xRDJl43FX+9/WEGGNEEYgFiEXuHGxLcD+VphCIuS5tuOuDLCdBrp7oZPHMkES17X6AMQacDoZWz8TnH/7urr+cPCOzlIISlzKlyKVVbfVgr23+04SLjKSeoCtPjXu5Y+Lyj0z09kGYCRsZDAiVMSOaxpQKYJd7QwBcG3ZN0KoAZQssBWeugshN65NkzUDzAHYfjKDUgtRCGLEdS2o8xgcDUvvV2ZNHn2cuL5sDqoBoaspXf0m4noNoGwFKYmY81FTX0H0c3msOYotHAMlLvU4Dz7zU/9vcmgfE9wHpNwocbixGqEUTeBy6l+bi0Uk2xcnTWT76qyJbF+etiHV1+f/Ab2SZ0LIhUQmAAAAAElFTkSuQmCC';
+  l.href=c.toDataURL();
   document.head.appendChild(l);
 })();
 </script>
