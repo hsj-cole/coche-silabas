@@ -113,7 +113,7 @@ body {
   flex-shrink: 0;
 }
 .con-btn {
-  background: var(--card-bg);
+  background: #fef9c3;
   border: none; border-radius: 18px;
   padding: 9px 4px 7px;
   cursor: pointer;
@@ -123,8 +123,8 @@ body {
 }
 .con-btn:hover { transform: translateY(-3px); box-shadow: var(--shadow-md), 0 5px 0 rgba(0,0,0,.10); }
 .con-btn:active { transform: translateY(1px); box-shadow: 0 1px 0 rgba(0,0,0,.08); }
-.con-letter { font-family: 'Fredoka One', cursive; font-size: 1.9rem; line-height: 1; }
-.con-sub    { font-size: .7rem; font-weight: 700; color: rgba(255,255,255,.75); }
+.con-letter { font-family: 'Fredoka One', cursive; font-size: 1.9rem; line-height: 1; color: #0f766e; }
+.con-sub    { font-size: .7rem; font-weight: 700; color: #0f766e; }
 
 /* ══════════════════════════════════════
    GAME SCREEN
@@ -135,15 +135,16 @@ body {
 }
 
 .game-topbar {
-  display: flex; align-items: center; gap: 10px;
+  display: flex; align-items: center; justify-content: center; gap: 10px;
   padding: 10px 16px 6px; flex-shrink: 0; z-index: 20;
 }
 .back-btn {
   background: var(--white); border: none;
-  border-radius: 14px; padding: 7px 16px; cursor: pointer;
+  border-radius: 14px; padding: 7px 14px; cursor: pointer;
   font-family: 'Fredoka One', cursive; font-size: .95rem; color: var(--ink);
   box-shadow: var(--shadow-sm);
   transition: transform .12s, box-shadow .12s;
+  flex-shrink: 0;
 }
 .back-btn:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
 .back-btn:active { transform: translateY(1px); }
@@ -152,7 +153,7 @@ body {
   font-family: 'Fredoka One', cursive;
   font-size: clamp(1.1rem, 4vw, 1.7rem);
   color: var(--accent2);
-  flex: 1; text-align: center;
+  text-align: center;
 }
 .score-pill {
   background: var(--accent); border-radius: 20px;
@@ -558,7 +559,7 @@ body {
   <div class="game-topbar">
     <button class="back-btn" onclick="showScreen('main-menu')">← Volver</button>
     <div class="game-title">🔤 Vocales Directas</div>
-    <div style="width:80px"></div>
+
   </div>
   <div class="welcome-road" style="margin:8px auto;">
     <div class="preview-car">🚙</div>
@@ -589,7 +590,7 @@ body {
   <div class="game-topbar">
     <button class="back-btn" onclick="showScreen('main-menu')">← Volver</button>
     <div class="game-title">🏎️ Conduce tu Coche</div>
-    <div style="width:80px"></div>
+
   </div>
   <div class="welcome-road" style="margin:8px auto;">
     <div class="preview-car">🚙</div>
@@ -631,7 +632,7 @@ body {
   <div class="game-topbar">
     <button class="back-btn" onclick="showScreen('main-menu')">← Volver</button>
     <div class="game-title">📝 Forma tu Palabra</div>
-    <div style="width:80px"></div>
+
   </div>
   <div class="grid-title" style="margin-top:10px;">Elige las letras con las que quieres jugar</div>
   <div class="grid-title" style="font-size:.85rem;opacity:.7;margin-top:2px;">Puedes elegir varias — se guardan para la próxima vez</div>
@@ -678,7 +679,7 @@ body {
   <div class="game-topbar">
     <button class="back-btn" onclick="showScreen('main-menu')">← Volver</button>
     <div class="game-title">🧩 Forma por Sílabas</div>
-    <div style="width:80px"></div>
+
   </div>
   <div class="grid-title" style="margin-top:10px;" id="sylword-grid-title">Elige las consonantes con las que jugar</div>
   <div style="display:flex;gap:8px;margin:4px 0 6px;flex-shrink:0;justify-content:center;">
@@ -731,7 +732,7 @@ body {
   <div class="game-topbar">
     <button class="back-btn" onclick="showScreen('main-menu')">← Volver</button>
     <div class="game-title">🃏 Memoria de Sílabas</div>
-    <div style="width:80px"></div>
+
   </div>
   <div style="overflow-y:auto;flex:1;padding:8px 16px 16px;display:flex;flex-direction:column;gap:14px;align-items:center;">
     <!-- Modo -->
@@ -784,7 +785,7 @@ body {
   <div class="game-topbar">
     <button class="back-btn" onclick="showScreen('main-menu')">← Volver</button>
     <div class="game-title">📖 Lee tu Coche</div>
-    <div style="width:80px"></div>
+
   </div>
   <div class="welcome-road" style="margin:8px auto;">
     <div class="preview-car">🚗</div>
@@ -830,7 +831,7 @@ body {
   <div class="game-topbar">
     <button class="back-btn" onclick="showScreen('main-menu')">← Volver</button>
     <div class="game-title">🎤 Dictado Loco</div>
-    <div style="width:80px"></div>
+
   </div>
   <div class="grid-title" id="dl-grid-title">Elige las consonantes con las que practicar</div>
   <div style="display:flex;gap:8px;margin:4px 0 6px;flex-shrink:0;justify-content:center;flex-wrap:wrap;">
@@ -932,7 +933,7 @@ function vdBuildGrid() {
     var btn = document.createElement('button');
     btn.className = 'con-btn';
     btn.innerHTML =
-      '<span class="con-letter" style="color:'+con.color+'">'+con.c+'</span>' +
+      '<span class="con-letter">'+con.c+'</span>' +
       '<span class="con-sub">+vocal</span>';
     btn.addEventListener('click', function(){ startGame(con); });
     grid.appendChild(btn);
@@ -1236,7 +1237,7 @@ function driveBuildGrid() {
     btn.className = 'con-btn';
     btn.id = 'drive-con-btn-' + con.c;
     btn.innerHTML =
-      '<span class="con-letter" style="color:'+con.color+'">'+con.c+'</span>' +
+      '<span class="con-letter">'+con.c+'</span>' +
       '<span class="con-sub">+vocal</span>';
     btn.addEventListener('click', function() {
       var idx = driveSelectedCons.indexOf(con.c);
@@ -2934,7 +2935,7 @@ function wordBuildGrid() {
     if (isSelected) cls += ' con-selected';
     if (!available) cls += ' word-con-dim';
     btn.className = cls;
-    btn.innerHTML = '<span class="con-letter" style="color:' + con.color + '">' + con.c + '</span>';
+    btn.innerHTML = '<span class="con-letter">' + con.c + '</span>';
     btn.addEventListener('click', function() {
       if (!available) return;
       var idx = wordSelectedCons.indexOf(con.c);
@@ -3322,7 +3323,7 @@ function sylwordBuildGrid() {
     var btn = document.createElement('button');
     btn.className = 'con-btn';
     btn.id = 'sylword-con-btn-' + con.c;
-    btn.innerHTML = '<span class="con-letter" style="color:'+con.color+'">'+con.c+'</span>';
+    btn.innerHTML = '<span class="con-letter">'+con.c+'</span>';
     btn.addEventListener('click', function() {
       var idx = sylwordSelectedCons.indexOf(con.c);
       if (idx >= 0) { sylwordSelectedCons.splice(idx, 1); btn.classList.remove('con-selected'); }
@@ -3612,7 +3613,7 @@ function memInitWelcome() {
   list.forEach(function(con) {
     var btn = document.createElement('button');
     btn.className = 'con-btn';
-    btn.innerHTML = '<span class="con-letter" style="color:' + (con.color || '#333') + '">' + con.c + '</span>';
+    btn.innerHTML = '<span class="con-letter">' + con.c + '</span>';
     btn.onclick = function() {
       var idx = memSelectedCons.indexOf(con.c);
       if (idx >= 0) {
@@ -3858,7 +3859,7 @@ function luBuildGrid() {
   list.forEach(function(con) {
     var btn = document.createElement('button');
     btn.className = 'con-btn';
-    btn.innerHTML = '<span class="con-letter" style="color:'+con.color+'">'+con.c+'</span>';
+    btn.innerHTML = '<span class="con-letter">'+con.c+'</span>';
     btn.addEventListener('click', function() {
       var idx = luSelectedCons.indexOf(con.c);
       if (idx >= 0) { luSelectedCons.splice(idx, 1); btn.classList.remove('con-selected'); }
@@ -4232,10 +4233,8 @@ function dlRenderConsonantGrid() {
     var c = item.c;
     var btn = document.createElement('button');
     btn.className = 'con-btn';
-    btn.style.background = item.color;
     var lbl = document.createElement('div');
     lbl.className = 'con-letter';
-    lbl.style.color = '#fff';
     lbl.textContent = c;
     btn.appendChild(lbl);
     btn.onclick = function() {
@@ -4332,7 +4331,7 @@ function dlRenderAnswerDisplay() {
   if (!wrap) return;
   if (dlLevel === 'basic') {
     /* Show question mark placeholder */
-    wrap.innerHTML = '<div style="font-family:\'Fredoka One\',cursive;font-size:2.4rem;color:rgba(255,255,255,.3);">?</div>';
+    wrap.innerHTML = '<div style="font-family:\'Fredoka One\',cursive;font-size:2.4rem;color:var(--ink-soft);">?</div>';
     return;
   }
   /* advanced: show exactly target.length boxes, filled or empty */
@@ -4342,16 +4341,16 @@ function dlRenderAnswerDisplay() {
     if (i < dlTyped.length) {
       var box = document.createElement('div');
       box.className = 'con-btn';
-      box.style.cssText = 'min-width:52px;background:rgba(255,255,255,.2);pointer-events:none;';
+      box.style.cssText = 'min-width:52px;background:var(--card-bg);border:2px solid var(--card-border);pointer-events:none;';
       var lbl = document.createElement('div');
       lbl.className = 'con-letter';
-      lbl.style.color = '#fff';
+      lbl.style.color = 'var(--ink)';
       lbl.textContent = dlTyped[i];
       box.appendChild(lbl);
       wrap.appendChild(box);
     } else {
       var empty = document.createElement('div');
-      empty.style.cssText = 'width:52px;height:56px;border-radius:14px;border:2px dashed rgba(255,255,255,.3);';
+      empty.style.cssText = 'width:52px;height:56px;border-radius:14px;border:2px dashed var(--card-border);';
       wrap.appendChild(empty);
     }
   }
@@ -4384,7 +4383,7 @@ function dlRenderBasicOptions() {
   options.forEach(function(syl) {
     var btn = document.createElement('button');
     btn.className = 'con-btn';
-    btn.style.cssText = 'min-width:80px;padding:14px 20px;background:rgba(255,255,255,.18);';
+    btn.style.cssText = 'min-width:80px;padding:14px 20px;background:var(--white);border:2px solid var(--card-border);';
     var lbl = document.createElement('div');
     lbl.className = 'con-letter';
     lbl.style.fontSize = '2rem';
