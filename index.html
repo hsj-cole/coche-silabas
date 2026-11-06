@@ -5477,6 +5477,8 @@ function csToggleWord() {
   gap: clamp(10px, 4vw, 20px);
   height: 80px;
   position: relative;
+  transition: transform .4s ease, opacity .4s ease;
+  transform-origin: center center;
 }
 
 /* Nenúfar individual */
@@ -5877,7 +5879,7 @@ function csToggleWord() {
   }
 
   function activateRow(rowIdx) {
-    // Desactivar todas las filas del rows container
+    var midSteps = frogSteps - 1;
     for (var i = 0; i < frogSteps; i++) {
       var row = document.getElementById('frog-row-' + i);
       if (!row) continue;
@@ -5886,7 +5888,38 @@ function csToggleWord() {
         lily.classList.add('muted');
         lily.querySelector('.frog-lily-syl').style.visibility = 'hidden';
       });
+
+      // Perspectiva: distancia hacia el otro lado (filas por encima de la activa)
+      // fila activa = distancia 0, filas superiores = distancia creciente
+      // Para filas intermedias: fila i más alta en pantalla = número más alto
+      // fila activa = rowIdx; filas con i > rowIdx están más cerca de la orilla
+      var dist;
+      if (i === frogSteps - 1) {
+        // Fila de orilla superior: siempre visible a lo lejos
+        dist = midSteps - rowIdx; // cuánto falta para llegar
+      } else {
+        dist = i - rowIdx; // positivo = más cerca de la orilla, negativo = ya pasada
+      }
+
+      var scale, opacity;
+      if (dist < 0) {
+        // Filas ya pasadas (detrás de la rana): casi invisibles
+        scale   = 0.55 + 0.1 * (dist + 1 < 0 ? 0 : dist + 1);
+        opacity = 0.15;
+      } else if (dist === 0) {
+        // Fila activa: tamaño completo
+        scale   = 1;
+        opacity = 1;
+      } else {
+        // Filas por delante (más cerca del otro lado): escala y opacidad decrecientes con distancia
+        scale   = Math.max(0.45, 1 - dist * 0.14);
+        opacity = Math.max(0.2, 1 - dist * 0.22);
+      }
+
+      row.style.transform = 'scale(' + scale + ')';
+      row.style.opacity   = opacity;
     }
+
     var activeRow = document.getElementById('frog-row-' + rowIdx);
     if (!activeRow) return;
     activeRow.querySelectorAll('.frog-lily').forEach(function(lily) {
