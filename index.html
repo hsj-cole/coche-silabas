@@ -562,6 +562,11 @@ body {
       <div class="menu-btn-title">Rompe el Huevo</div>
       <div class="menu-btn-desc">¡Golpea los huevos con la sílaba correcta!</div>
     </button>
+    <button class="menu-btn color-green" onclick="showScreen('frog-welcome'); frogInitWelcome();">
+      <div class="menu-btn-icon">🐸</div>
+      <div class="menu-btn-title">Salta la Rana</div>
+      <div class="menu-btn-desc">¡Ayuda a la rana a cruzar el lago saltando a la sílaba correcta!</div>
+    </button>
   </div>
 </div>
 
@@ -5327,4 +5332,729 @@ function csToggleWord() {
 })();
 </script>
 
+
+</body></html>
+
+<!-- ============================================================
+     SALTA LA RANA — CSS
+     ============================================================ -->
+<style>
+/* ── FROG WELCOME ── */
+#frog-welcome {
+  background: linear-gradient(180deg, #1a6b3a 0%, #2d9e5f 50%, #1a8c4a 100%);
+  align-items: stretch;
+  overflow-y: auto;
+}
+#frog-welcome .game-topbar { background: rgba(0,0,0,0.25); }
+#frog-welcome .game-topbar .game-title { color: #fff; }
+#frog-welcome .back-btn { background: rgba(255,255,255,0.2); color: #fff; }
+
+.frog-welcome-body {
+  display: flex; flex-direction: column; align-items: center;
+  gap: 12px; padding: 12px 20px 24px;
+}
+.frog-welcome-title {
+  font-family: 'Fredoka One', cursive;
+  font-size: clamp(1.4rem, 5vw, 2rem);
+  color: #fff; text-align: center;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+.frog-con-grid {
+  display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;
+  max-width: 420px; width: 100%;
+}
+.frog-con-btn {
+  width: 56px; height: 56px;
+  border-radius: 14px; border: 3px solid rgba(255,255,255,0.3);
+  background: rgba(255,255,255,0.15);
+  font-family: 'Fredoka One', cursive; font-size: 1.4rem;
+  color: #fff; cursor: pointer; transition: all .15s;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  line-height: 1;
+}
+.frog-con-btn span { font-size: .6rem; opacity: .8; margin-top: 2px; }
+.frog-con-btn.selected {
+  background: #ffe066; color: #2d2d4e;
+  border-color: #ffd000;
+  transform: scale(1.08);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+.frog-level-row { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+.frog-level-btn {
+  padding: 10px 20px; border-radius: 20px; border: none;
+  font-family: 'Fredoka One', cursive; font-size: .95rem;
+  cursor: pointer; transition: all .15s;
+  background: rgba(255,255,255,0.2); color: #fff;
+}
+.frog-level-btn.selected {
+  background: #ffe066; color: #2d2d4e;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+.frog-start-btn {
+  width: 100%; max-width: 280px; padding: 14px;
+  border-radius: 20px; border: none;
+  background: linear-gradient(135deg, #ffe066, #ffb300);
+  color: #2d2d4e; font-family: 'Fredoka One', cursive; font-size: 1.3rem;
+  cursor: pointer; transition: all .15s;
+  box-shadow: 0 4px 0 rgba(0,0,0,0.2);
+}
+.frog-start-btn:disabled { opacity: .4; cursor: default; }
+.frog-start-btn:not(:disabled):active { transform: scale(0.97); }
+
+/* ── FROG GAME ── */
+#frog-game {
+  background: linear-gradient(180deg, #87ceeb 0%, #4a90d9 100%);
+  overflow: hidden;
+}
+#frog-game .game-topbar { background: rgba(0,0,0,0.2); }
+#frog-game .game-topbar .game-title { color: #fff; }
+#frog-game .back-btn { background: rgba(255,255,255,0.2); color: #fff; }
+
+/* Contenedor principal del juego (ocupa todo menos topbar) */
+.frog-arena {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Área scrollable de nenúfares (desde arriba hasta orilla inferior) */
+.frog-lake {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Orilla superior (meta) */
+.frog-shore-top {
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 44px;
+  background: linear-gradient(180deg, #2d9e5f, #1a7a3e);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.5rem;
+  z-index: 10;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
+
+/* Orilla inferior (salida) */
+.frog-shore-bottom {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  height: 60px;
+  background: linear-gradient(0deg, #2d9e5f, #1a7a3e);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 5;
+  box-shadow: 0 -4px 8px rgba(0,0,0,0.3);
+}
+
+/* Agua */
+.frog-water-bg {
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, #1565c0 0%, #1976d2 50%, #1565c0 100%);
+}
+.frog-water-bg::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent, transparent 30px,
+    rgba(255,255,255,0.04) 30px, rgba(255,255,255,0.04) 32px
+  );
+}
+
+/* Filas de nenúfares — se apilan verticalmente dentro del lago */
+.frog-rows-container {
+  position: absolute;
+  left: 0; right: 0;
+  /* se posiciona dinámicamente por JS */
+}
+
+/* Una fila de nenúfares */
+.frog-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: clamp(10px, 4vw, 20px);
+  height: 80px;
+  position: relative;
+}
+
+/* Nenúfar individual */
+.frog-lily {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  width: clamp(70px, 20vw, 90px);
+  height: clamp(55px, 15vw, 70px);
+  border-radius: 50%;
+  background: radial-gradient(ellipse at 35% 30%, #81c784, #388e3c 65%, #1b5e20);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.4), inset 0 -4px 6px rgba(0,0,0,0.2);
+  border: 3px solid #1b5e20;
+  cursor: pointer;
+  transition: transform .12s, background .2s;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  position: relative;
+}
+.frog-lily::before {
+  content: '';
+  position: absolute; inset: 6px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255,255,255,0.18);
+  pointer-events: none;
+}
+/* Nenúfar sin sílaba (filas futuras) */
+.frog-lily.muted {
+  background: radial-gradient(ellipse at 35% 30%, #4caf50, #2e7d32 65%, #1b4e20);
+  cursor: default;
+  opacity: 0.75;
+}
+.frog-lily-syl {
+  font-family: 'Fredoka One', cursive;
+  font-size: clamp(.9rem, 4vw, 1.3rem);
+  color: #fff;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.6);
+  line-height: 1;
+  pointer-events: none;
+}
+.frog-lily.active-lily {
+  box-shadow: 0 6px 20px rgba(255,235,59,.7), 0 0 0 3px #ffe066, inset 0 -4px 6px rgba(0,0,0,0.2);
+  animation: lilyGlow 1.2s ease-in-out infinite alternate;
+}
+@keyframes lilyGlow {
+  from { box-shadow: 0 6px 16px rgba(255,235,59,.5), 0 0 0 3px #ffe066, inset 0 -4px 6px rgba(0,0,0,0.2); }
+  to   { box-shadow: 0 6px 28px rgba(255,235,59,.9), 0 0 0 5px #ffd000, inset 0 -4px 6px rgba(0,0,0,0.2); }
+}
+/* Nenúfares en la orilla superior (última pregunta) */
+.frog-row-shore {
+  position: absolute;
+  left: 0; right: 0;
+  top: 0;
+  height: 44px; /* igual que shoreH */
+  display: flex; align-items: center; justify-content: center;
+  gap: clamp(10px, 4vw, 20px);
+  background: linear-gradient(180deg, #2d9e5f, #1a7a3e);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  z-index: 12; /* encima de la orilla original */
+  pointer-events: auto;
+}
+.frog-row-shore .frog-lily {
+  width: clamp(54px, 15vw, 68px);
+  height: clamp(38px, 10vw, 48px);
+}
+.frog-row-shore .frog-lily-syl {
+  font-size: clamp(.85rem, 3.8vw, 1.2rem);
+}
+.frog-lily.correct-flash {
+  background: radial-gradient(ellipse at 35% 30%, #ffe066, #ffb300 65%, #cc8800) !important;
+  border-color: #cc8800 !important;
+  animation: none !important;
+}
+.frog-lily.wrong-shake {
+  background: radial-gradient(ellipse at 35% 30%, #ef5350, #c62828 65%, #8e0000) !important;
+  border-color: #8e0000 !important;
+  animation: lilyShake .4s ease !important;
+}
+@keyframes lilyShake {
+  0%,100% { transform: translateX(0); }
+  25%     { transform: translateX(-7px); }
+  75%     { transform: translateX(7px); }
+}
+
+/* Rana */
+#frog-sprite {
+  position: absolute;
+  font-size: clamp(2rem, 7vw, 2.8rem);
+  line-height: 1;
+  z-index: 15;
+  pointer-events: none;
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5));
+  transform: translateX(-50%);
+  transition: top .45s cubic-bezier(.34,1.4,.64,1);
+}
+#frog-sprite.splash-anim {
+  animation: frogSplash .55s forwards;
+}
+@keyframes frogSplash {
+  0%   { transform: scale(1) rotate(0); opacity: 1; }
+  40%  { transform: scale(1.3) rotate(25deg); opacity: 1; }
+  100% { transform: scale(0.3) rotate(50deg); opacity: 0; }
+}
+
+/* Barra inferior: botón oír + feedback */
+.frog-bottom-bar {
+  display: flex; flex-direction: column; align-items: center;
+  gap: 2px; padding: 6px 16px 10px; flex-shrink: 0;
+  background: rgba(0,0,0,0.15);
+}
+.frog-hear-btn {
+  background: linear-gradient(135deg, #ffe066, #ffb300);
+  color: #2d2d4e; border: none; border-radius: 50px;
+  padding: 9px 28px;
+  font-family: 'Fredoka One', cursive; font-size: 1.05rem;
+  cursor: pointer; box-shadow: 0 4px 0 rgba(0,0,0,0.2);
+  transition: transform .12s;
+}
+.frog-hear-btn:active { transform: scale(0.95); }
+.frog-feedback {
+  font-family: 'Fredoka One', cursive; font-size: 1.15rem;
+  color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,0.4);
+  text-align: center; min-height: 1.6rem; line-height: 1.6rem;
+}
+
+/* Overlay fin */
+.frog-end-overlay {
+  position: absolute; inset: 0; z-index: 30;
+  background: rgba(0,0,0,0.65);
+  display: flex; align-items: center; justify-content: center;
+}
+.frog-end-box {
+  background: #fff; border-radius: 24px;
+  padding: 28px 36px; text-align: center;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+  display: flex; flex-direction: column; align-items: center; gap: 12px;
+  max-width: 320px; width: 90%;
+}
+.frog-end-emoji { font-size: 3rem; }
+.frog-end-title { font-family: 'Fredoka One', cursive; font-size: 1.7rem; color: #2d2d4e; }
+.frog-end-sub   { font-family: 'Nunito', sans-serif; font-size: .95rem; color: #6b7280; }
+.frog-end-btns  { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+.frog-end-btn {
+  padding: 11px 22px; border-radius: 50px; border: none;
+  font-family: 'Fredoka One', cursive; font-size: 1rem; cursor: pointer;
+}
+.frog-end-btn-play { background: linear-gradient(135deg, #2d9e5f, #1a6b3a); color: #fff; }
+.frog-end-btn-menu { background: #f0f4ff; color: #2d2d4e; }
+</style>
+
+<!-- ============================================================
+     SALTA LA RANA — PANTALLA BIENVENIDA
+     ============================================================ -->
+<div class="screen" id="frog-welcome">
+  <div class="game-topbar">
+    <button class="back-btn" onclick="showScreen('main-menu')">← Volver</button>
+    <div class="game-title">🐸 Salta la Rana</div>
+    <div></div>
+  </div>
+  <div class="frog-welcome-body">
+    <div style="font-size:3.5rem;">🐸</div>
+    <div class="frog-welcome-title">¡Ayuda a la rana a cruzar el lago!</div>
+    <div style="font-family:'Fredoka One',cursive;font-size:.95rem;color:rgba(255,255,255,0.85);text-align:center;">
+      Elige las consonantes a practicar:
+    </div>
+    <div class="frog-con-grid" id="frog-con-grid"></div>
+    <div style="font-family:'Fredoka One',cursive;font-size:.95rem;color:rgba(255,255,255,0.85);text-align:center;margin-top:4px;">
+      Nivel (pasos para cruzar):
+    </div>
+    <div class="frog-level-row">
+      <button class="frog-level-btn selected" data-steps="4" onclick="frogSelectLevel(this)">🌟 Fácil (4)</button>
+      <button class="frog-level-btn" data-steps="6" onclick="frogSelectLevel(this)">⭐⭐ Medio (6)</button>
+      <button class="frog-level-btn" data-steps="8" onclick="frogSelectLevel(this)">🔥 Difícil (8)</button>
+    </div>
+    <button class="frog-start-btn" id="frog-start-btn" onclick="frogStartGame()" disabled>
+      🐸 ¡Empezar!
+    </button>
+  </div>
+</div>
+
+<!-- ============================================================
+     SALTA LA RANA — PANTALLA JUEGO
+     ============================================================ -->
+<div class="screen" id="frog-game">
+  <div class="game-topbar">
+    <button class="back-btn" onclick="frogEndGame()">← Volver</button>
+    <div class="game-title">🐸 Salta la Rana</div>
+    <div class="score-pill" id="frog-score">⭐ 0</div>
+  </div>
+  <div class="frog-arena">
+    <div class="frog-lake" id="frog-lake">
+      <div class="frog-water-bg"></div>
+      <div class="frog-shore-top" id="frog-shore-top">🌺🌿🌺</div>
+      <div class="frog-rows-container" id="frog-rows"></div>
+      <div id="frog-sprite">🐸</div>
+      <div class="frog-shore-bottom" id="frog-shore-bottom">🌿🌱🌿</div>
+    </div>
+    <div class="frog-bottom-bar">
+      <button class="frog-hear-btn" id="frog-hear-btn" onclick="frogSpeak()">🔊 Escuchar sílaba</button>
+      <div class="frog-feedback" id="frog-feedback"></div>
+    </div>
+    <!-- Overlay fin -->
+    <div class="frog-end-overlay" id="frog-end-overlay" style="display:none;">
+      <div class="frog-end-box">
+        <div class="frog-end-emoji" id="frog-end-emoji">🎉</div>
+        <div class="frog-end-title" id="frog-end-title">¡Lo conseguiste!</div>
+        <div class="frog-end-sub"   id="frog-end-sub"></div>
+        <div class="frog-end-btns">
+          <button class="frog-end-btn frog-end-btn-play" onclick="frogStartGame()">🔄 Otra vez</button>
+          <button class="frog-end-btn frog-end-btn-menu" onclick="frogEndGame()">🏠 Menú</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     SALTA LA RANA — JAVASCRIPT
+     ============================================================ -->
+<script>
+(function(){
+  'use strict';
+
+  var VOCALES = ['A','E','I','O','U'];
+  var CONSONANTES = ['B','C','D','F','G','H','J','K','L','LL','M','N','Ñ','P','Q','R','S','T','V','W','X','Y','Z'];
+
+  var frogSelectedCons = [];
+  var frogSteps        = 7;
+  var frogCurrentStep  = 0;  // 0 = orilla, 1..N = nenúfar N, N+1 = llegada
+  var frogScore        = 0;
+  var frogCurrentSyl   = '';
+  var frogBusy         = false;
+  var frogQuestions    = []; // array de {correct, opts[3]} para cada fila
+  var frogRowH         = 80; // altura de cada fila en px
+  var frogActiveRow    = -1; // índice DOM de la fila activa actual
+
+  /* ─── WELCOME ─── */
+  window.frogInitWelcome = function() {
+    frogSelectedCons = [];
+    var grid = document.getElementById('frog-con-grid');
+    grid.innerHTML = '';
+    CONSONANTES.forEach(function(c) {
+      var btn = document.createElement('button');
+      btn.className = 'frog-con-btn';
+      btn.innerHTML = c + '<span>+vocal</span>';
+      btn.onclick = function(){ frogToggleCon(c, btn); };
+      grid.appendChild(btn);
+    });
+    document.getElementById('frog-start-btn').disabled = true;
+    document.querySelectorAll('.frog-level-btn').forEach(function(b){ b.classList.remove('selected'); });
+    document.querySelector('.frog-level-btn[data-steps="4"]').classList.add('selected');
+    frogSteps = 7;
+  };
+
+  window.frogToggleCon = function(c, btn) {
+    var idx = frogSelectedCons.indexOf(c);
+    if (idx === -1){ frogSelectedCons.push(c); btn.classList.add('selected'); }
+    else           { frogSelectedCons.splice(idx,1); btn.classList.remove('selected'); }
+    document.getElementById('frog-start-btn').disabled = frogSelectedCons.length === 0;
+  };
+
+  window.frogSelectLevel = function(btn) {
+    document.querySelectorAll('.frog-level-btn').forEach(function(b){ b.classList.remove('selected'); });
+    btn.classList.add('selected');
+    frogSteps = parseInt(btn.dataset.steps);
+  };
+
+  /* ─── POOL ─── */
+  function buildPool() {
+    var pool = [];
+    frogSelectedCons.forEach(function(con) {
+      VOCALES.forEach(function(v) {
+        var syl;
+        if      (con === 'LL') syl = 'LL' + v;
+        else if (con === 'Q')  syl = (v === 'E' ? 'QUE' : v === 'I' ? 'QUI' : con + v);
+        else if (con === 'Ñ')  syl = 'Ñ' + v;
+        else                   syl = con + v;
+        pool.push(syl);
+      });
+    });
+    return pool;
+  }
+
+  function shuffle(arr) {
+    for (var i = arr.length-1; i > 0; i--) {
+      var j = Math.floor(Math.random()*(i+1));
+      var t = arr[i]; arr[i] = arr[j]; arr[j] = t;
+    }
+    return arr;
+  }
+
+  /* ─── START ─── */
+  window.frogStartGame = function() {
+    var pool = buildPool();
+    if (pool.length < 3) return; // necesitamos al menos 3 sílabas distintas
+
+    frogCurrentStep = 0;
+    frogScore       = 0;
+    frogBusy        = false;
+    frogQuestions   = [];
+
+    // Generar todas las preguntas de golpe
+    for (var s = 0; s < frogSteps; s++) {
+      var correct = pool[Math.floor(Math.random() * pool.length)];
+      var distractors = shuffle(pool.filter(function(x){ return x !== correct; }));
+      var opts = shuffle([correct, distractors[0], distractors[1]]);
+      frogQuestions.push({ correct: correct, opts: opts });
+    }
+
+    showScreen('frog-game');
+    document.getElementById('frog-score').textContent = '⭐ 0';
+    document.getElementById('frog-end-overlay').style.display = 'none';
+    document.getElementById('frog-feedback').textContent = '';
+
+    buildLake();
+    positionFrog(false);
+    setTimeout(frogSpeak, 500);
+  };
+
+  /* ─── BUILD LAKE ─── */
+  function buildLake() {
+    var lake    = document.getElementById('frog-lake');
+    // Limpiar fila de orilla de partidas anteriores
+    var oldShore = document.querySelector('.frog-row-shore');
+    if (oldShore) oldShore.parentNode.removeChild(oldShore);
+    var rows    = document.getElementById('frog-rows');
+    var shoreH  = 44;
+    var shoreBot= 60;
+    var lakeH   = lake.clientHeight || 400;
+    var availH  = lakeH - shoreH - shoreBot;
+
+    // Filas intermedias = frogSteps - 1 (la última va en la orilla)
+    var midSteps = frogSteps - 1;
+    // Altura de cada fila: reparte el espacio disponible entre las filas intermedias
+    frogRowH = Math.floor(availH / midSteps);
+
+    rows.innerHTML = '';
+    rows.style.position  = 'absolute';
+    rows.style.left      = '0';
+    rows.style.right     = '0';
+    rows.style.height    = availH + 'px';
+    rows.style.top       = shoreH + 'px';   // justo bajo la orilla superior
+    rows.style.bottom    = 'auto';
+    rows.style.transition= 'none';
+
+    // Fila 0 = más abajo (primer salto), fila midSteps-1 = más arriba (penúltimo salto)
+    // Usamos top dentro del contenedor: fila 0 abajo → top = (midSteps-1-i)*frogRowH
+    for (var i = 0; i < midSteps; i++) {
+      var q = frogQuestions[i];
+      var row = document.createElement('div');
+      row.className = 'frog-row';
+      row.id = 'frog-row-' + i;
+      row.style.position = 'absolute';
+      row.style.left = '0'; row.style.right = '0';
+      row.style.height = frogRowH + 'px';
+      // fila 0 está al fondo del área de agua (arriba en DOM = abajo en pantalla al revés)
+      row.style.top  = ((midSteps - 1 - i) * frogRowH) + 'px';
+      row.style.bottom = 'auto';
+
+      q.opts.forEach(function(syl, idx) {
+        var lily = document.createElement('div');
+        lily.className = 'frog-lily muted';
+        lily.id = 'frog-lily-' + i + '-' + idx;
+        lily.dataset.syl = syl;
+        lily.dataset.row = i;
+        var label = document.createElement('div');
+        label.className = 'frog-lily-syl';
+        label.style.visibility = 'hidden';
+        label.textContent = syl;
+        lily.appendChild(label);
+        lily.onclick = (function(s, el){ return function(){ frogAnswer(s, el); }; })(syl, lily);
+        row.appendChild(lily);
+      });
+      rows.appendChild(row);
+    }
+
+    // Última fila: en la orilla superior (siempre visible, sobresale hacia abajo)
+    var lastQ   = frogQuestions[frogSteps - 1];
+    var lastRow = document.createElement('div');
+    lastRow.className = 'frog-row frog-row-shore';
+    lastRow.id = 'frog-row-' + (frogSteps - 1);
+    lastQ.opts.forEach(function(syl, idx) {
+      var lily = document.createElement('div');
+      lily.className = 'frog-lily muted';
+      lily.id = 'frog-lily-' + (frogSteps - 1) + '-' + idx;
+      lily.dataset.syl = syl;
+      lily.dataset.row = frogSteps - 1;
+      var label = document.createElement('div');
+      label.className = 'frog-lily-syl';
+      label.style.visibility = 'hidden';
+      label.textContent = syl;
+      lily.appendChild(label);
+      lily.onclick = (function(s, el){ return function(){ frogAnswer(s, el); }; })(syl, lily);
+      lastRow.appendChild(lily);
+    });
+    lake.appendChild(lastRow);
+
+    frogActiveRow = 0;
+    activateRow(0);
+  }
+
+  function activateRow(rowIdx) {
+    // Desactivar todas las filas del rows container
+    for (var i = 0; i < frogSteps; i++) {
+      var row = document.getElementById('frog-row-' + i);
+      if (!row) continue;
+      row.querySelectorAll('.frog-lily').forEach(function(lily) {
+        lily.classList.remove('active-lily');
+        lily.classList.add('muted');
+        lily.querySelector('.frog-lily-syl').style.visibility = 'hidden';
+      });
+    }
+    var activeRow = document.getElementById('frog-row-' + rowIdx);
+    if (!activeRow) return;
+    activeRow.querySelectorAll('.frog-lily').forEach(function(lily) {
+      lily.classList.remove('muted');
+      lily.classList.add('active-lily');
+      lily.querySelector('.frog-lily-syl').style.visibility = 'visible';
+    });
+    frogCurrentSyl = frogQuestions[rowIdx].correct;
+  }
+
+  /* ─── POSICIÓN RANA ─── */
+  // Calcula top (desde arriba del lake) donde debe estar el centro de la rana
+  function getFrogTop(step) {
+    var lake    = document.getElementById('frog-lake');
+    var lakeH   = lake.clientHeight || 400;
+    var shoreH  = 44;
+    var shoreBot= 60;
+    var availH  = lakeH - shoreH - shoreBot;
+    var midSteps = frogSteps - 1;
+
+    if (step === 0) {
+      // Orilla inferior: centro de la orilla de salida
+      return lakeH - shoreBot / 2;
+    } else if (step >= frogSteps) {
+      // Orilla superior: centro de la orilla de llegada
+      return shoreH / 2;
+    } else {
+      // Fila intermedia step-1 (0-based).
+      // El contenedor rows empieza en top=shoreH.
+      // Fila i tiene top = (midSteps-1-i)*frogRowH dentro del contenedor.
+      // step-1 = i → top de la fila = shoreH + (midSteps-1-(step-1))*frogRowH
+      var rowTopInLake = shoreH + (midSteps - step) * frogRowH;
+      return rowTopInLake + frogRowH / 2;
+    }
+  }
+
+  function positionFrog(animate, lilyEl) {
+    var sprite = document.getElementById('frog-sprite');
+    var lake   = document.getElementById('frog-lake');
+    var centerTop = getFrogTop(frogCurrentStep);
+    var targetTop = centerTop - 22;
+
+    // Posición horizontal: centro del nenúfar si se pasa, si no centro del lake
+    var targetLeft;
+    if (lilyEl) {
+      var lilyRect  = lilyEl.getBoundingClientRect();
+      var lakeRect  = lake.getBoundingClientRect();
+      targetLeft = (lilyRect.left - lakeRect.left) + lilyRect.width / 2;
+    } else {
+      targetLeft = lake.clientWidth / 2;
+    }
+
+    sprite.style.bottom = 'auto';
+
+    if (!animate) {
+      sprite.style.transition = 'none';
+      sprite.style.top     = targetTop + 'px';
+      sprite.style.left    = targetLeft + 'px';
+      sprite.style.opacity = '1';
+      sprite.textContent   = '🐸';
+      sprite.className     = '';
+    } else {
+      sprite.style.transition = 'top .45s cubic-bezier(.34,1.4,.64,1), left .35s cubic-bezier(.34,1.4,.64,1)';
+      sprite.style.top  = targetTop + 'px';
+      sprite.style.left = targetLeft + 'px';
+    }
+  }
+
+  /* ─── HABLAR ─── */
+  window.frogSpeak = function() {
+    if (!frogCurrentSyl) return;
+    speakLoud(frogCurrentSyl);
+  };
+
+  /* ─── RESPUESTA ─── */
+  function frogAnswer(syl, lilyEl) {
+    if (frogBusy) return;
+    // Solo responder si el nenúfar es de la fila activa
+    var rowIdx = parseInt(lilyEl.dataset.row);
+    if (rowIdx !== frogActiveRow) return;
+
+    frogBusy = true;
+    var correct = syl === frogCurrentSyl;
+
+    if (correct) {
+      lilyEl.classList.remove('active-lily');
+      lilyEl.classList.add('correct-flash');
+      document.getElementById('frog-feedback').textContent = '¡Perfecto! 🎉';
+      frogScore++;
+      document.getElementById('frog-score').textContent = '⭐ ' + frogScore;
+
+      var wasLastStep = (rowIdx === frogSteps - 1);
+      frogCurrentStep++;
+
+      if (wasLastStep) {
+        // Acertó en la orilla — rana salta al nenúfar correcto
+        positionFrog(true, lilyEl);
+        setTimeout(function() {
+          lilyEl.classList.remove('correct-flash');
+          frogBusy = false;
+          frogWin();
+        }, 650);
+      } else {
+        // Paso intermedio: mover rana al nenúfar correcto
+        positionFrog(true, lilyEl);
+
+        setTimeout(function() {
+          lilyEl.classList.remove('correct-flash');
+          frogBusy = false;
+          if (frogCurrentStep >= frogSteps) {
+            // Siguiente es la orilla superior: activar esa fila
+            frogActiveRow = frogSteps - 1;
+            activateRow(frogActiveRow);
+          } else {
+            frogActiveRow = frogCurrentStep;
+            activateRow(frogActiveRow);
+          }
+          setTimeout(frogSpeak, 400);
+        }, 750);
+      }
+
+    } else {
+      lilyEl.classList.add('wrong-shake');
+      document.getElementById('frog-feedback').textContent = '¡Oops! 💦 Inténtalo otra vez';
+
+      // Rana cae animación
+      var sprite = document.getElementById('frog-sprite');
+      sprite.classList.add('splash-anim');
+
+      setTimeout(function() {
+        lilyEl.classList.remove('wrong-shake');
+        sprite.classList.remove('splash-anim');
+        sprite.style.opacity = '1';
+        sprite.style.transform = 'translateX(-50%)';
+        sprite.textContent = '🐸';
+        document.getElementById('frog-feedback').textContent = '🔊 Escucha otra vez...';
+        frogBusy = false;
+        positionFrog(false); // vuelve al mismo sitio
+        setTimeout(frogSpeak, 400);
+      }, 650);
+    }
+  }
+
+  /* ─── WIN ─── */
+  function frogWin() {
+    // positionFrog ya colocó la rana en la orilla superior
+    // Limpiar nenúfares de la orilla
+    var lastRow = document.getElementById('frog-row-' + (frogSteps - 1));
+    if (lastRow) {
+      lastRow.querySelectorAll('.frog-lily').forEach(function(l) {
+        l.classList.remove('active-lily'); l.classList.add('muted');
+        l.querySelector('.frog-lily-syl').style.visibility = 'hidden';
+      });
+    }
+    setTimeout(function() {
+      document.getElementById('frog-end-emoji').textContent = '🎉🐸🌺';
+      document.getElementById('frog-end-title').textContent = '¡La rana cruzó!';
+      document.getElementById('frog-end-sub').textContent   = 'Aciertos: ' + frogScore + ' / ' + frogSteps;
+      document.getElementById('frog-end-overlay').style.display = 'flex';
+    }, 600);
+  }
+
+  /* ─── END ─── */
+  window.frogEndGame = function() {
+    if (window.speechSynthesis) window.speechSynthesis.cancel();
+    showScreen('frog-welcome');
+  };
+
+})();
+</script>
 </body></html>
